@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="red">#f00</drawable>  
+    <drawable name="green">#0f0</drawable>  
+    <drawable name="gray">#ccc</drawable>
+    
+    <color name="highlighttext">#00ff00</color>
+    <color name="tab_menu_normal">#3f3f3f</color>
+    <color name="tab_menu_down">#3cbaff</color>
+</resources>
