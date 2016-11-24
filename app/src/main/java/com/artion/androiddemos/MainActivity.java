@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,6 +34,7 @@ import com.artion.androiddemos.dialog.KdAlertBuilder.KdAlertItemListener;
 import com.artion.androiddemos.domain.ActInterfaceModel;
 import com.artion.androiddemos.highlight.HighLightTextViewDemo;
 import com.artion.androiddemos.impl.ActInterface;
+import com.artion.androiddemos.service.SysBroadcastRecevier;
 import com.artion.androiddemos.utils.ActivityIntentTools;
 import com.artion.androiddemos.utils.DebugTool;
 import com.artion.androiddemos.view.TextViewDrawableClick;
@@ -239,7 +241,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 							ToastUtils.showMessage(MainActivity.this, "取消了做什么");
 						}
 					}).create().show();
-			
+			sendBroadcast(new Intent(SysBroadcastRecevier.ACTION_TEST));
 			break;
 		case R.id.button10:
 			ViewUtils.onViewClickTimes(v, 300, new OnViewClickListener() {
