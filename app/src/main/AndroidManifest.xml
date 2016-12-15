@@ -25,7 +25,14 @@
         android:theme="@style/AppTheme" >
         
         
-        <activity android:name="com.artion.androiddemos.Demos" />
+        <activity android:name="com.artion.androiddemos.Demos" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+        </activity>
         <activity android:name="com.artion.androiddemos.acts.SessionAct" />
         <activity android:name="com.artion.androiddemos.acts.PopupWindowDemoActivity" />
         <activity android:name="com.artion.androiddemos.acts.SensorTestActivity" />
@@ -98,14 +105,8 @@
         
         
         <activity
-            android:name="com.artion.androiddemos.MainActivity"
+            android:name="com.artion.androiddemos.acts.MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-                
-            </intent-filter>
         </activity>
         
         <activity android:name="com.artion.androiddemos.acts.ListDemo" />

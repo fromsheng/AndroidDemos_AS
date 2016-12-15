@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.artion.androiddemos.BaseApplication;
-import com.artion.androiddemos.MainActivity;
 import com.artion.androiddemos.common.ToastUtils;
 
 import android.app.ActivityManager;
@@ -22,13 +21,11 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.WindowManager;

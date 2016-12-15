@@ -3,13 +3,11 @@ package com.artion.androiddemos.view;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.artion.androiddemos.MainActivity;
 import com.artion.androiddemos.acts.ImageViewSrcDemo;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.utils.ActivityIntentTools;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -18,8 +16,6 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.view.MotionEvent;

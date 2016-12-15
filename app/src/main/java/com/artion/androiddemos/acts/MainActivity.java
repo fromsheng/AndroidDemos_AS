@@ -1,4 +1,4 @@
-package com.artion.androiddemos;
+package com.artion.androiddemos.acts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +15,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.artion.androiddemos.acts.ActInterfaceDemo;
-import com.artion.androiddemos.acts.GridViewMenuDemo;
-import com.artion.androiddemos.acts.ImageViewSrcDemo;
-import com.artion.androiddemos.acts.ListDemo;
-import com.artion.androiddemos.acts.ListDownDemo;
-import com.artion.androiddemos.acts.MultiImageViewDemo;
-import com.artion.androiddemos.acts.OnGestureDemo;
-import com.artion.androiddemos.acts.SingleImageViewDemo;
-import com.artion.androiddemos.acts.TextLongDemo;
-import com.artion.androiddemos.acts.TextViewLongDemo;
-import com.artion.androiddemos.acts.TranslateDemo;
+import com.artion.androiddemos.BaseActivity;
+import com.artion.androiddemos.Demos;
+import com.artion.androiddemos.R;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.common.ViewUtils;
 import com.artion.androiddemos.common.ViewUtils.OnViewClickListener;
