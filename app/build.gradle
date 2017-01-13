@@ -8,6 +8,7 @@ android {
         applicationId "com.artion.androiddemos"
         minSdkVersion 9
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -21,4 +22,5 @@ android {
 dependencies {
     compile "com.android.support:appcompat-v7:${APPCOMPAT_VERSION}"
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 }

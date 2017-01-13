@@ -14,7 +14,7 @@ import android.widget.ListView;
 public class Demos extends BaseActivity {
 	
 	private ListView listView;
-	private List<String> actNames;
+	public static  List<String> actNames;
 	
 	private void initActNames() {
 		actNames = new ArrayList<String>();
