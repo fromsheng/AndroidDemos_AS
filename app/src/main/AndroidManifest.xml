@@ -102,7 +102,9 @@
         </activity>
         <activity android:name="com.artion.androiddemos.acts.TextSelectedDemo"
             android:label="TextSelectedDemo" />
-        
+        <activity android:name="com.artion.androiddemos.acts.RecyclerViewDemo"
+            android:label="RecyclerViewDemo" />
+
         
         <activity
             android:name="com.artion.androiddemos.acts.MainActivity"
