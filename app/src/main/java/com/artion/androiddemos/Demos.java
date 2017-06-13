@@ -5,11 +5,14 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.artion.androiddemos.utils.DebugTool;
 
 public class Demos extends BaseActivity {
 	
@@ -75,6 +78,37 @@ public class Demos extends BaseActivity {
 		
 		initLayout();
 		initListener();
+
+		byte[] ivBytes = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+		long t0 = System.currentTimeMillis();
+		String encodeBytes = Base64.encodeToString(ivBytes, Base64.NO_WRAP);
+//		byte[] encodeBytes = Base64.encode(ivBytes, Base64.NO_WRAP);
+		long t1 = System.currentTimeMillis();
+		DebugTool.info(tag, "加密耗时：" + (t1-t0));
+		DebugTool.info(tag, "加密后：" + encodeBytes);
+//		printBytes(encodeBytes);
+		byte[] decodeBytes = Base64.decode(encodeBytes, Base64.NO_WRAP);
+		long t2 = System.currentTimeMillis();
+		DebugTool.info(tag, "解密密耗时：" + (t2-t1));
+		printBytes(decodeBytes);
+
+
+		String mode = "MD5withRSA";
+		String encodeMode = Base64.encodeToString(mode.getBytes(), Base64.NO_WRAP);
+		DebugTool.info(tag, "encodeMode加密：" + encodeMode);
+		String decodeMode = new String(Base64.decode(encodeMode.getBytes(), Base64.NO_WRAP));
+		DebugTool.info(tag, "decodeMode：" + decodeMode);
+
+	}
+
+	private void printBytes(byte[] bs) {
+		StringBuffer sb = new StringBuffer();
+		for (byte b1 : bs) {
+			sb.append(b1);
+			sb.append(" ");
+		}
+		DebugTool.info(tag, "原数据：" + sb.toString());
 	}
 
 	@Override

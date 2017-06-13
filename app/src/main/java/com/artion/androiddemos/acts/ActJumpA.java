@@ -10,6 +10,8 @@ import com.artion.androiddemos.fragment.BaseFragment;
 import com.artion.androiddemos.fragment.FragmentA;
 import com.artion.androiddemos.utils.DebugTool;
 
+import org.json.JSONArray;
+
 public class ActJumpA extends FragmentActivity {
 
 	@Override
@@ -22,7 +24,21 @@ public class ActJumpA extends FragmentActivity {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ft.replace(R.id.fragment_container, fm);
 		ft.commitAllowingStateLoss();
-		
+
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.put("111");
+		jsonArray.put("222");
+		jsonArray.put("333");
+		jsonArray.put("444");
+		DebugTool.info("ActJump", "jsonArray=" + jsonArray.toString());
+		String[] strs = new String[jsonArray.length()];
+		for (int i = 0; i < jsonArray.length(); i++) {
+			strs[i] = jsonArray.optString(i);
+		}
+		for (String s : strs) {
+			DebugTool.info("ActJump", s);
+		}
+
 	}
 
 	@Override

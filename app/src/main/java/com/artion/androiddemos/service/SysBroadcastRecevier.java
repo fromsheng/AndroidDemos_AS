@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
+import com.artion.androiddemos.common.AndroidUtils;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.utils.DebugTool;
+import com.artion.androiddemos.utils.DeviceTool;
 
 /**
  * Created by caijinsheng on 16/11/24.
@@ -33,13 +35,14 @@ public class SysBroadcastRecevier extends BroadcastReceiver {
             String packageName=intent.getDataString();
             DebugTool.info(TAG, "uninstall packageName: " + packageName);
             ToastUtils.showMessage(context, "uninstall packageName: " + packageName);
+
             PackageManager pm = context.getPackageManager();
             try {//TODO 取不到applicationInfo,仅有包名
                 ApplicationInfo appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
 
                 if(appInfo != null && appInfo.metaData != null) {
                     String gateway = appInfo.metaData.getString("MPUSH_GATEWAY");
-                    DebugTool.info(TAG, "uninstall gateway: " + gateway);
+                    DebugTool.info(TAG, "uninstall packageName gateway: " + gateway);
                 }
 
             } catch (PackageManager.NameNotFoundException e) {
@@ -52,6 +55,10 @@ public class SysBroadcastRecevier extends BroadcastReceiver {
             DebugTool.info(TAG, "add packageName: " + packageName);
             ToastUtils.showMessage(context, "add packageName: " + packageName);
 
+        } else if(action.equals(Intent.ACTION_PACKAGE_REPLACED)) {
+            String packageName=intent.getDataString();
+            DebugTool.info(TAG, "replace packageName: " + packageName);
+            ToastUtils.showMessage(context, "replace packageName: " + packageName);
         }
     }
 }
