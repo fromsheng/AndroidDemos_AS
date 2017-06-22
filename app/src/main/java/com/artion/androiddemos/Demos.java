@@ -21,6 +21,7 @@ public class Demos extends BaseActivity {
 	
 	private void initActNames() {
 		actNames = new ArrayList<String>();
+		actNames.add("ActConstraintsDemo");
 		actNames.add("RecyclerViewDemo");
 		actNames.add("TextSelectedDemo");
 		actNames.add("MPushVCodeDemo");

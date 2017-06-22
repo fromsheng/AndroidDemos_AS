@@ -2,170 +2,176 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.artion.androiddemos"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
-
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
-        android:name="com.artion.androiddemos.BaseApplication"
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        
-        
-        <activity android:name="com.artion.androiddemos.Demos" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".Demos">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
-        <activity android:name="com.artion.androiddemos.acts.SessionAct" />
-        <activity android:name="com.artion.androiddemos.acts.PopupWindowDemoActivity" />
-        <activity android:name="com.artion.androiddemos.acts.SensorTestActivity" />
-        <activity android:name="com.artion.androiddemos.acts.ViewPopupWindowDemo" />
-        <activity android:name="com.artion.androiddemos.acts.CroutonDemo" />
-        <activity android:name="com.artion.androiddemos.acts.TopPopupDemo" />
-        <activity android:name="com.artion.androiddemos.acts.LoadingDialogDemo" />
-        <activity android:name="com.artion.androiddemos.acts.MainDemos" />
-        <activity android:name="com.artion.androiddemos.acts.AnimationDemo" />
-        <activity android:name="com.artion.androiddemos.acts.StartDoDemo" />
-        <activity android:name="com.artion.androiddemos.acts.MyDrawViewAct" />
-        <activity android:name="com.artion.androiddemos.acts.EditTextDemo"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name="com.artion.androiddemos.acts.ImageCompressDemo" />
-        <activity android:name="com.artion.androiddemos.acts.MoveViewDemo" />
-        <activity android:name="com.artion.androiddemos.acts.ImagePressedDemo" />
-        <activity android:name="com.artion.androiddemos.acts.ExtraViewDemo" />
-        <activity android:name="com.artion.androiddemos.acts.NettyDemo" />
-        <activity android:name="com.artion.androiddemos.acts.NoticationDemo" />
-        <activity android:name="com.artion.androiddemos.acts.LuckySettingDemo" />
-        <activity android:name="com.artion.androiddemos.acts.TabMenuDemo" />
-        <activity android:name="com.artion.androiddemos.acts.AnimatorDemo" />
-        <activity android:name="com.artion.androiddemos.acts.SurfaceViewDemo" />
-        <activity android:name="com.artion.androiddemos.acts.RoundDemo" />
-        <activity android:name="com.artion.androiddemos.acts.InputBoxDemo" 
-            android:windowSoftInputMode="adjustNothing" />
-        <activity android:name="com.artion.androiddemos.acts.OnTouchDemo" />
-        <activity android:name="com.artion.androiddemos.acts.ActJumpA"
-            android:label="ActJumpA" />
-        <activity android:name="com.artion.androiddemos.acts.ActJumpB"
-            android:label="ActJumpB" />
-        <activity android:name="com.artion.androiddemos.acts.CanlanderDemo"
-            android:label="CanlanderDemo" />
-        <activity android:name="com.artion.androiddemos.acts.ActInterfaceDemo"
-            android:label="ActInterfaceDemo" />
-        <activity android:name="com.artion.androiddemos.acts.ClipboardDemo"
-            android:label="ClipboardDemo" />
-        <activity android:name="com.artion.androiddemos.acts.AudioManagerDemo"
-            android:label="ActInterfaceDemo" />
-        <activity android:name="com.artion.androiddemos.acts.ImageLockDemo"
-            android:label="ImageLockDemo" />
-        <activity android:name="com.artion.androiddemos.acts.MPushVCodeDemo"
-            android:label="MPushVCodeDemo" />
-        <activity android:name="com.artion.androiddemos.acts.ShareIntentDemo"
-            android:label="ShareIntentDemo" >
-            <intent-filter>  
-               <action android:name="android.intent.action.SEND" />  
-  
-               <category android:name="android.intent.category.DEFAULT" />  
-  
-               <data android:mimeType="image/*" />  
-           </intent-filter>  
-           <intent-filter>  
-               <action android:name="android.intent.action.SEND" />  
-  
-               <category android:name="android.intent.category.DEFAULT" />  
-  
-               <data android:mimeType="text/plain" />  
-           </intent-filter>  
-           <intent-filter>  
-               <action android:name="android.intent.action.SEND_MULTIPLE" />  
-  
-               <category android:name="android.intent.category.DEFAULT" />  
-  
-               <data android:mimeType="image/*" />  
-           </intent-filter> 
-        </activity>
-        <activity android:name="com.artion.androiddemos.acts.TextSelectedDemo"
-            android:label="TextSelectedDemo" />
-        <activity android:name="com.artion.androiddemos.acts.RecyclerViewDemo"
-            android:label="RecyclerViewDemo" />
-
-        
+        <activity android:name=".acts.SessionAct" />
+        <activity android:name=".acts.PopupWindowDemoActivity" />
+        <activity android:name=".acts.SensorTestActivity" />
+        <activity android:name=".acts.ViewPopupWindowDemo" />
+        <activity android:name=".acts.CroutonDemo" />
+        <activity android:name=".acts.TopPopupDemo" />
+        <activity android:name=".acts.LoadingDialogDemo" />
+        <activity android:name=".acts.MainDemos" />
+        <activity android:name=".acts.AnimationDemo" />
+        <activity android:name=".acts.StartDoDemo" />
+        <activity android:name=".acts.MyDrawViewAct" />
         <activity
-            android:name="com.artion.androiddemos.acts.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        
-        <activity android:name="com.artion.androiddemos.acts.ListDemo" />
-        
-        <activity android:name="com.artion.androiddemos.acts.SingleImageViewDemo" >
-            <intent-filter >
-                <action android:name="android.intent.action.VIEW" />
-            	<category android:name="android.intent.category.DEFAULT" />
-            	<data android:host="android_demos_single" android:scheme="artion" />
-            </intent-filter>
-        </activity>
-        
-        <activity android:name="com.artion.androiddemos.acts.MultiImageViewDemo" />
-        
-        <activity android:name="com.artion.androiddemos.acts.ListDownDemo" />
-        
-        <activity android:name="com.artion.androiddemos.highlight.HighLightTextViewDemo" />
-        
-        <activity android:name="com.artion.androiddemos.acts.ImageViewSrcDemo" />
-        
-        <activity android:name="com.artion.androiddemos.acts.TranslateDemo" />
-        
-        <activity android:name="com.artion.androiddemos.acts.TextViewLongDemo" />
-        
-        <activity android:name="com.artion.androiddemos.acts.TextLongDemo" />
-        
-        <activity android:name="com.artion.androiddemos.acts.GridViewMenuDemo" />
-        <activity android:name="com.artion.androiddemos.acts.OnGestureDemo" />
-        
-        <service android:name="com.artion.androiddemos.service.LuckyService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:label="@string/lucky_service_label">
+            android:name=".acts.EditTextDemo"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".acts.ImageCompressDemo" />
+        <activity android:name=".acts.MoveViewDemo" />
+        <activity android:name=".acts.ImagePressedDemo" />
+        <activity android:name=".acts.ExtraViewDemo" />
+        <activity android:name=".acts.NettyDemo" />
+        <activity android:name=".acts.NoticationDemo" />
+        <activity android:name=".acts.LuckySettingDemo" />
+        <activity android:name=".acts.TabMenuDemo" />
+        <activity android:name=".acts.AnimatorDemo" />
+        <activity android:name=".acts.SurfaceViewDemo" />
+        <activity android:name=".acts.RoundDemo" />
+        <activity
+            android:name=".acts.InputBoxDemo"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".acts.OnTouchDemo" />
+        <activity
+            android:name=".acts.ActJumpA"
+            android:label="ActJumpA" />
+        <activity
+            android:name=".acts.ActJumpB"
+            android:label="ActJumpB" />
+        <activity
+            android:name=".acts.CanlanderDemo"
+            android:label="CanlanderDemo" />
+        <activity
+            android:name=".acts.ActInterfaceDemo"
+            android:label="ActInterfaceDemo" />
+        <activity
+            android:name=".acts.ClipboardDemo"
+            android:label="ClipboardDemo" />
+        <activity
+            android:name=".acts.AudioManagerDemo"
+            android:label="ActInterfaceDemo" />
+        <activity
+            android:name=".acts.ImageLockDemo"
+            android:label="ImageLockDemo" />
+        <activity
+            android:name=".acts.MPushVCodeDemo"
+            android:label="MPushVCodeDemo" />
+        <activity
+            android:name=".acts.ShareIntentDemo"
+            android:label="ShareIntentDemo">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService"/>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
             </intent-filter>
-            <meta-data android:name="android.accessibilityservice"
-                android:resource="@xml/lucky_service_config"/>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".acts.TextSelectedDemo"
+            android:label="TextSelectedDemo" />
+        <activity
+            android:name=".acts.RecyclerViewDemo"
+            android:label="RecyclerViewDemo" />
+        <activity
+            android:name=".acts.MainActivity"
+            android:label="@string/app_name"></activity>
+        <activity android:name=".acts.ListDemo" />
+        <activity android:name=".acts.SingleImageViewDemo">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="android_demos_single"
+                    android:scheme="artion" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".acts.MultiImageViewDemo" />
+        <activity android:name=".acts.ListDownDemo" />
+        <activity android:name=".highlight.HighLightTextViewDemo" />
+        <activity android:name=".acts.ImageViewSrcDemo" />
+        <activity android:name=".acts.TranslateDemo" />
+        <activity android:name=".acts.TextViewLongDemo" />
+        <activity android:name=".acts.TextLongDemo" />
+        <activity android:name=".acts.GridViewMenuDemo" />
+        <activity android:name=".acts.OnGestureDemo" />
+        <activity android:name=".acts.ActConstraintsDemo" />
+
+        <service
+            android:name=".service.LuckyService"
+            android:label="@string/lucky_service_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/lucky_service_config" />
         </service>
 
-        <receiver android:name="com.artion.androiddemos.service.SysBroadcastRecevier" >
+        <receiver android:name=".service.SysBroadcastRecevier">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <action android:name="com.artion.androiddemos.service.ACTION.TEST" />
+
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
-        <service android:name="com.artion.androiddemos.service.NotificationMonitorService"
+        <service
+            android:name=".service.NotificationMonitorService"
             android:label="NotificationMonitor"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-        
+
+        <activity android:name=".acts.ActConstraintsDemo"></activity>
     </application>
 
 </manifest>
