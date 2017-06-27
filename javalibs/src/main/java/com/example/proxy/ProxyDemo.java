@@ -13,9 +13,9 @@ public class ProxyDemo {
         target.updateInfo();
         target.updateInfo("55555");
 
+        JdkProxyFactory factory = new JdkProxyFactory();
 
         System.out.println("代理开始！");
-        JdkProxyFactory factory = new JdkProxyFactory();
         User userProxy = (User) factory.createProxy(target);
         userProxy.login();
         userProxy.updateInfo();
@@ -26,5 +26,13 @@ public class ProxyDemo {
         Bag bagProxy = (Bag) factory.createProxy(targetBag);
 
         System.out.println("代理=" + bagProxy.getColor());
+
+//        System.out.println();
+//        Dog dog = new Dog("狗");
+//        dog.info();
+//
+//        Animal dogProxy = (Animal) factory.createProxy(dog);
+//        dogProxy.info();
+
     }
 }
