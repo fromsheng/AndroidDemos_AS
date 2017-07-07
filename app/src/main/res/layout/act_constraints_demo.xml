@@ -4,6 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.artion.androiddemos.acts.ActConstraintsDemo">
+    tools:context="com.artion.androiddemos.acts.ActConstraintsDemo"
+    tools:layout_editor_absoluteY="90dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <Button
+        android:id="@+id/button16"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button18"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10" />
+
+    <Button
+        android:id="@+id/button18"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintStart_toEndOf="@+id/button16"
+        app:layout_constraintEnd_toStartOf="@+id/button19"
+        app:layout_constraintBottom_toBottomOf="@+id/button16"
+        tools:layout_editor_absoluteX="120dp" />
+
+    <Button
+        android:id="@+id/button19"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button18"
+        app:layout_constraintBottom_toBottomOf="@+id/button18"
+        tools:layout_editor_absoluteX="240dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline10"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
 
 </android.support.constraint.ConstraintLayout>

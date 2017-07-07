@@ -41,9 +41,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/guideline"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5060827"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="208dp" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <Button
         android:text="Button"
@@ -84,5 +82,32 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="16dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/button20" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button15"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3" />
+
+    <Button
+        android:id="@+id/button15"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="2"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/button26"
+        app:layout_constraintBottom_toBottomOf="@+id/button" />
+
+    <Button
+        android:id="@+id/button26"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button15"
+        app:layout_constraintBottom_toBottomOf="@+id/button15" />
 
 </android.support.constraint.ConstraintLayout>
