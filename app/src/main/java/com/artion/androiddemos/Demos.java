@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.artion.androiddemos.service.FloatViewService;
 import com.artion.androiddemos.utils.DebugTool;
 
 public class Demos extends BaseActivity {
@@ -101,6 +102,9 @@ public class Demos extends BaseActivity {
 		String decodeMode = new String(Base64.decode(encodeMode.getBytes(), Base64.NO_WRAP));
 		DebugTool.info(tag, "decodeMode：" + decodeMode);
 
+		Intent intent = new Intent(this, FloatViewService.class);
+		startService(intent);
+
 	}
 
 	private void printBytes(byte[] bs) {
@@ -151,4 +155,10 @@ public class Demos extends BaseActivity {
 		});
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Intent intent = new Intent(this, FloatViewService.class);
+		stopService(intent);
+	}
 }
