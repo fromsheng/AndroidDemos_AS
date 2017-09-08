@@ -1,13 +1,13 @@
 package com.artion.androiddemos.dialog;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -15,19 +15,28 @@ import android.widget.TextView;
 
 import com.artion.androiddemos.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PopListWindow {
 	
-	public class ListItem {
-		public int iconRid;
+	public static class ListItem {
 		public String title;
-		public View.OnClickListener clickListener;
+		public ListItemLister itemLister;
+
+		public interface ListItemLister {
+			void onClick(int pos, String title);
+		}
 	}
 	
 	private PopupWindow mPopWin;
 	private Context mContext;
 	private TextView tvExtra;
-	
-	public void PopListWindow(Context context) {
+
+	private List<ListItem> listItems = null;
+	private PopAdapter mAdapter = null;
+
+	public PopListWindow(Context context) {
 		this.mContext = context;
 		
 		initPopWind();
@@ -38,15 +47,41 @@ public class PopListWindow {
 		View popupWindow = layoutInflater.inflate(R.layout.pop_list, null);
 		ListView lv = (ListView) popupWindow.findViewById(R.id.pop_listview);
 		tvExtra = (TextView) popupWindow.findViewById(R.id.pop_list_extra);
-		List<ListItem> list = new ArrayList<ListItem>();
-		PopAdapter mAdapter = new PopAdapter(mContext, list);
+		listItems = new ArrayList<ListItem>();
+		mAdapter = new PopAdapter(mContext, listItems);
 		lv.setAdapter(mAdapter);
+
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				ListItem item = listItems.get(position);
+				if(item != null) {
+					item.itemLister.onClick(position, item.title);
+				}
+				mPopWin.dismiss();
+			}
+		});
 
 		mPopWin = new PopupWindow(popupWindow, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		mPopWin.setOutsideTouchable(true);  
 		mPopWin.update();  
 		mPopWin.setTouchable(true);  
-		mPopWin.setFocusable(true);  
+		mPopWin.setFocusable(true);
+		mPopWin.setBackgroundDrawable(new ColorDrawable());
+	}
+
+	public void resetListItems(View parentView, List<ListItem> items) {
+		if(parentView == null || items == null || items.isEmpty()) {
+			return;
+		}
+		int[] location = new  int[2] ;
+//		parentView.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
+		parentView.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
+//		mPopWin.showAsDropDown(parentView, (parentView.getWidth()-mPopWin.getWidth())/2, -parentView.getHeight()/2);
+		mPopWin.showAtLocation(parentView, Gravity.NO_GRAVITY, location[0] + 10, location[1] + parentView.getHeight()/2);
+		this.listItems.clear();
+		this.listItems.addAll(items);
+		mAdapter.notifyDataSetChanged();
 	}
 	
 	private class PopAdapter extends BaseAdapter {

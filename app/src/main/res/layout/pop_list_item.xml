@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp" >
+    android:background="@drawable/selector_pop_list_window_item"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
     
     <TextView android:id="@+id/pop_list_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textSize="16sp" 
+        android:textSize="20sp"
         android:textColor="#ffffff"
         android:ellipsize="end"
-        android:singleLine="true"/>
+        android:maxLines="1"/>
 
 </RelativeLayout>

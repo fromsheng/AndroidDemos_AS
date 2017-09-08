@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.artion.androiddemos.BaseActivity;
 import com.artion.androiddemos.R;
 import com.artion.androiddemos.common.ToastUtils;
+import com.artion.androiddemos.dialog.PopListWindow;
 import com.artion.androiddemos.utils.DebugTool;
 
 public class ListDownDemo extends BaseActivity {
@@ -53,6 +54,39 @@ public class ListDownDemo extends BaseActivity {
 	private Animation alphaIn, alphaOut;
 
 	private static int lastPos, firstTop;
+
+	private PopListWindow mPopListWin = null;
+
+	public PopListWindow getPopWin() {
+		if(mPopListWin == null) {
+			mPopListWin = new PopListWindow(mAct);
+		}
+		return mPopListWin;
+	}
+
+	private List<PopListWindow.ListItem> getListItems() {
+		List<PopListWindow.ListItem> listItems = new ArrayList<>();
+		final PopListWindow.ListItem item = new PopListWindow.ListItem();
+		item.title = "放大";
+		item.itemLister = new PopListWindow.ListItem.ListItemLister() {
+			@Override
+			public void onClick(int pos, String title) {
+				ToastUtils.showMessage(mAct, title);
+			}
+		};
+		listItems.add(item);
+		final PopListWindow.ListItem item2 = new PopListWindow.ListItem();
+		item2.title = "转换摄相头";
+		item2.itemLister = new PopListWindow.ListItem.ListItemLister() {
+			@Override
+			public void onClick(int pos, String title) {
+				ToastUtils.showMessage(mAct, title);
+			}
+		};
+		listItems.add(item2);
+
+		return listItems;
+	}
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -171,6 +205,7 @@ public class ListDownDemo extends BaseActivity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				ToastUtils.showMessage(ListDownDemo.this, "点击了 " + lists.get(arg2));
+				getPopWin().resetListItems(arg1, getListItems());
 			}
 		});
 		

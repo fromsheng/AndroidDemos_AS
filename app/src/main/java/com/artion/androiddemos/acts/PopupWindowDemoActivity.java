@@ -9,6 +9,8 @@ import com.artion.androiddemos.R.layout;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -81,7 +83,7 @@ public class PopupWindowDemoActivity extends Activity implements
 		case R.id.button00:
 			getPopupWindowInstance();
 			mPopupWindow.showAsDropDown(v);
-			mPopWin.showAsDropDown(v);
+			mPopWin.showAsDropDown(v, 0, -50);
 			break;
 		case R.id.button01:
 			getPopupWindowInstance();
@@ -221,7 +223,8 @@ public class PopupWindowDemoActivity extends Activity implements
 		mPopWin.setOutsideTouchable(true);  
 		mPopWin.update();  
 		mPopWin.setTouchable(true);  
-		mPopWin.setFocusable(true);  
+		mPopWin.setFocusable(true);
+		mPopWin.setBackgroundDrawable(new ColorDrawable());
 	}
 
 	/*
