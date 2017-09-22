@@ -12,8 +12,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.service.FloatViewService;
 import com.artion.androiddemos.utils.DebugTool;
+import com.artion.androiddemos.utils.JniUtils;
 
 public class Demos extends BaseActivity {
 	
@@ -105,6 +107,7 @@ public class Demos extends BaseActivity {
 		Intent intent = new Intent(this, FloatViewService.class);
 		startService(intent);
 
+		ToastUtils.showMessage(this, JniUtils.getStringFromC());
 	}
 
 	private void printBytes(byte[] bs) {
