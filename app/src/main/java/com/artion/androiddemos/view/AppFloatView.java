@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import com.artion.androiddemos.R;
@@ -16,15 +17,16 @@ import com.artion.androiddemos.R;
  */
 
 public class AppFloatView {
-    private Context c;
+    protected Context c;
     public AppFloatView(Context c) {
         this.c=c;
     }
 
-    private WindowManager wm;
-    private View view;// 浮动按钮
 
-    private OnFloatViewListener mListener;
+    protected WindowManager wm;
+    protected View view;// 浮动按钮
+
+    protected OnFloatViewListener mListener;
 
     public void setFloatViewListener(OnFloatViewListener listener) {
         this.mListener = listener;

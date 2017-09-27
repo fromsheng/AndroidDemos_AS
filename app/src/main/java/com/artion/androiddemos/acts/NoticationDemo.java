@@ -2,17 +2,23 @@ package com.artion.androiddemos.acts;
 
 import com.artion.androiddemos.R;
 import com.artion.androiddemos.common.NotificationUtils;
+import com.artion.androiddemos.view.FloatNotificationView;
 
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 
 
 public class NoticationDemo extends CommonBtnDemo {
 
+	private FloatNotificationView floatView;
+
 	int count = 0;
+	boolean isShow = false;
 	@Override
 	protected void initListener() {
 		// TODO Auto-generated method stub
@@ -51,7 +57,29 @@ public class NoticationDemo extends CommonBtnDemo {
 				}).start();
 				}
 		});
+
+		btn3.setText("悬浮通知");
+		btn3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(isShow) {
+					getFloatView().hideFloatView();
+				} else {
+					getFloatView().showFloatView();
+				}
+				isShow = !isShow;
+
+			}
+		});
 		
+	}
+
+	private FloatNotificationView getFloatView() {
+		if(floatView == null) {
+			floatView = new FloatNotificationView(this.getApplicationContext());
+			floatView.createFloatView(0);
+		}
+		return floatView;
 	}
 
 }
