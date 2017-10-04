@@ -17,6 +17,8 @@ public class LoadingDialog {
 
 	private ProgressDialog progressDialog;
 
+	private String mCurrentTitle = null;
+
 	private static InternalHandler sHandler = null;
 
 	private static LoadingDialog instance = null;
@@ -63,6 +65,10 @@ public class LoadingDialog {
 			@Override
 			public void run() {
 				try {
+					if(isShowingSameTxt(context, title)) {
+						return;
+					}
+
 					initProgressDialog(context, title);
 
 					progressDialog.setCancelable(isCancelable);
@@ -140,9 +146,27 @@ public class LoadingDialog {
 		progressDialog = new ProgressDialog(context);
 
 		progressDialog.setMessage(msg);
+		mCurrentTitle = msg;
 
 		progressDialog.setCancelable(false);//默认不可取消
 		progressDialog.setCanceledOnTouchOutside(false);
+	}
+
+	private boolean isShowingSameTxt(Context context, int titleRes) {
+		return isShowingSameTxt(context, context.getString(titleRes));
+	}
+
+	private boolean isShowingSameTxt(Context context, String title) {
+		if(title == null) {
+			return false;
+		}
+		if (progressDialog != null && progressDialog.isShowing()) {
+			if(mCurrentTitle != null) {
+				return mCurrentTitle.equals(title);
+			}
+		}
+
+		return false;
 	}
 
 	private void dismiss() {
@@ -155,6 +179,7 @@ public class LoadingDialog {
 
 		} finally {
 			progressDialog = null;
+			mCurrentTitle = null;
 		}
 	}
 

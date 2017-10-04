@@ -11,8 +11,10 @@ import com.artion.androiddemos.R;
 import com.artion.androiddemos.R.id;
 import com.artion.androiddemos.R.layout;
 import com.artion.androiddemos.common.LoadingDialog;
+import com.artion.androiddemos.common.TimerUtils;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.common.LoadingDialog.ProgressListener;
+import com.artion.androiddemos.utils.DebugTool;
 
 public class LoadingDialogDemo extends BaseActivity {
 	
@@ -51,7 +53,22 @@ public class LoadingDialogDemo extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				LoadingDialog.getInstance().showLoading(mAct, "没有取消事件", true, false);
+//				LoadingDialog.getInstance().showLoading(mAct, "没有取消事件", true, false);
+
+				new TimerUtils().startTimer(1000, new TimerUtils.TimerListener() {
+					@Override
+					public void timeOnTick(long seconds) {
+
+					}
+
+					@Override
+					public void timeOnFinish() {
+						DebugTool.info(tag, "你好你好你好呀");
+						LoadingDialog.getInstance().showLoading(mAct, "你好你好你好呀", true, false);
+					}
+				}, 10);
+
+
 			}
 		});
 		
