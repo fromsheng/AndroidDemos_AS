@@ -24,6 +24,7 @@ public class Demos extends BaseActivity {
 	
 	private void initActNames() {
 		actNames = new ArrayList<String>();
+		actNames.add("LocalReceiverDemo");
 		actNames.add("ActConstraintsDemo");
 		actNames.add("RecyclerViewDemo");
 		actNames.add("TextSelectedDemo");
@@ -104,10 +105,10 @@ public class Demos extends BaseActivity {
 		String decodeMode = new String(Base64.decode(encodeMode.getBytes(), Base64.NO_WRAP));
 		DebugTool.info(tag, "decodeMode：" + decodeMode);
 
-		Intent intent = new Intent(this, FloatViewService.class);
-		startService(intent);
+//		Intent intent = new Intent(this, FloatViewService.class);
+//		startService(intent);
 
-		ToastUtils.showMessage(this, JniUtils.getStringFromC());
+//		ToastUtils.showMessage(this, JniUtils.getStringFromC());
 	}
 
 	private void printBytes(byte[] bs) {
@@ -161,7 +162,7 @@ public class Demos extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Intent intent = new Intent(this, FloatViewService.class);
-		stopService(intent);
+//		Intent intent = new Intent(this, FloatViewService.class);
+//		stopService(intent);
 	}
 }
