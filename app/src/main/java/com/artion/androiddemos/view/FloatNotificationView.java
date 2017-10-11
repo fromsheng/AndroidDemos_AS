@@ -1,6 +1,7 @@
 package com.artion.androiddemos.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.view.Gravity;
 import android.view.View;
@@ -25,6 +26,8 @@ public class FloatNotificationView extends AppFloatView {
         }
     };
 
+    private String mTitle = "";
+
     @Override
     public void createFloatView(int paddingBottom) {
 //        super.createFloatView(paddingBottom);
@@ -36,10 +39,14 @@ public class FloatNotificationView extends AppFloatView {
         params.type = WindowManager.LayoutParams.TYPE_TOAST;// 所有程序窗口的“基地”窗口，其他应用程序窗口都显示在它上面。
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+//                | WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         params.format = PixelFormat.TRANSLUCENT;// 不设置这个弹出框的透明遮罩显示为黑色
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        params.windowAnimations = android.R.style.Animation_Translucent;// set the animation for the window
+//        params.windowAnimations = android.R.style.Animation_Translucent;// set the animation for the window
+//        params.windowAnimations = com.android.internal.R.style.Animation_SearchBar;// set the animation for the window
+        params.windowAnimations = Resources.getSystem().getIdentifier("Animation.SearchBar", "style", "android");// set the animation for the window
         params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
 //        view.setBackgroundColor(Color.TRANSPARENT);
 
@@ -58,10 +65,21 @@ public class FloatNotificationView extends AppFloatView {
         wm.addView(view, params);
     }
 
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void showTitle(String title) {
+        this.mTitle = title;
+        MyViewUtils.getMyViewHolder(view).tvTitle.setText(title);
+        showFloatView();
+    }
+
     @Override
     public void showFloatView() {
         super.showFloatView();
         if(view != null) {
+            view.removeCallbacks(hiddenRunnable);
             view.postDelayed(hiddenRunnable, 3000);
         }
     }

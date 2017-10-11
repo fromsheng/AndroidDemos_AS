@@ -12,7 +12,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,8 +30,8 @@ public class MyViewUtils {
         NEVERUSED, LOGO, TITLE, CONTENT, TIME, ITEM
     }
 
-    public static int ITEM_VIEW_BGCOLOR_NORMAL = Color.parseColor("#66ffffff");
-    public static int ITEM_VIEW_BGCOLOR_PRESSED = Color.parseColor("#4dffffff");
+    public static int FLOAT_VIEW_BGCOLOR_NORMAL = Color.parseColor("#e8ffffff");
+    public static int FLOAT_VIEW_BGCOLOR_PRESSED = Color.parseColor("#cdffffff");
 
 
     /**
@@ -71,8 +70,8 @@ public class MyViewUtils {
 
         LinearLayout view = new LinearLayout(context);
         view.setId(SCREEN_NOTICE_ITEM_ID.ITEM.ordinal());
-        view.setBackgroundColor(ITEM_VIEW_BGCOLOR_NORMAL);
-        int padding4 = dip2px(context, 4);
+        view.setBackgroundColor(FLOAT_VIEW_BGCOLOR_NORMAL);
+        int padding4 = dip2px(context, 8);
         //设置根布局的样式,更换RecycleView时调整点击效果需要加rootview
 //        ViewGroup.LayoutParams viewParams = new ViewGroup.LayoutParams(
 //                LinearLayout.LayoutParams.MATCH_PARENT,
@@ -130,13 +129,37 @@ public class MyViewUtils {
         view.addView(tvTime);
 
         Drawable selector = newSelector(
-                ITEM_VIEW_BGCOLOR_NORMAL, ITEM_VIEW_BGCOLOR_PRESSED, ITEM_VIEW_BGCOLOR_PRESSED, ITEM_VIEW_BGCOLOR_NORMAL);
+                FLOAT_VIEW_BGCOLOR_NORMAL, FLOAT_VIEW_BGCOLOR_PRESSED, FLOAT_VIEW_BGCOLOR_PRESSED, FLOAT_VIEW_BGCOLOR_NORMAL);
         if(Build.VERSION.SDK_INT < 16) {
             view.setBackgroundDrawable(selector);
         } else {
             view.setBackground(selector);
         }
+        view.setDuplicateParentStateEnabled(false);
+
+        MyViewHolder holder = new MyViewHolder(view);
+        view.setTag(holder);
+
         return view;
+    }
+
+    public static MyViewHolder getMyViewHolder(View convertView) {
+        if(convertView == null) {
+            return null;
+        }
+        return (MyViewHolder) convertView.getTag();
+    }
+
+    public static class MyViewHolder {
+        public TextView tvTitle, tvContent, tvTime;
+        public ImageView logo;
+
+        public MyViewHolder(View convertView) {
+            tvTitle = (TextView) convertView.findViewById(SCREEN_NOTICE_ITEM_ID.TITLE.ordinal());
+            tvContent = (TextView) convertView.findViewById(SCREEN_NOTICE_ITEM_ID.CONTENT.ordinal());
+            tvTime = (TextView) convertView.findViewById(SCREEN_NOTICE_ITEM_ID.TIME.ordinal());
+            logo = (ImageView) convertView.findViewById(SCREEN_NOTICE_ITEM_ID.LOGO.ordinal());
+        }
     }
 
     /**

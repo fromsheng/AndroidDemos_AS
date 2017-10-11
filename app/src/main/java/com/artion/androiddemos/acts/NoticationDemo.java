@@ -2,7 +2,10 @@ package com.artion.androiddemos.acts;
 
 import com.artion.androiddemos.R;
 import com.artion.androiddemos.common.NotificationUtils;
+import com.artion.androiddemos.common.ToastUtils;
+import com.artion.androiddemos.view.AppFloatView;
 import com.artion.androiddemos.view.FloatNotificationView;
+import com.artion.androiddemos.view.ToastFloatView;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -45,16 +48,20 @@ public class NoticationDemo extends CommonBtnDemo {
 //				launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 //				launchIntent.setComponent(tIntent.getComponent());
 
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						Intent launchIntent = new Intent(mAct, ExtraViewDemo.class);
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						Intent launchIntent = new Intent(mAct, ExtraViewDemo.class);
+//
+//						PendingIntent pendingIntent = PendingIntent.getActivity(mAct, 0, launchIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//						NotificationUtils.showNotification(mAct, getApplicationInfo().icon, "title", "哈哈哈", pendingIntent, 0);
+//
+//					}
+//				}).start();
 
-						PendingIntent pendingIntent = PendingIntent.getActivity(mAct, 0, launchIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-						NotificationUtils.showNotification(mAct, getApplicationInfo().icon, "title", "哈哈哈", pendingIntent, 0);
+				ToastFloatView toastFloatView = new ToastFloatView(mAct.getApplicationContext());
+				toastFloatView.show();
 
-					}
-				}).start();
 				}
 		});
 
@@ -65,7 +72,7 @@ public class NoticationDemo extends CommonBtnDemo {
 				if(isShow) {
 					getFloatView().hideFloatView();
 				} else {
-					getFloatView().showFloatView();
+					getFloatView().showTitle("" + System.currentTimeMillis());
 				}
 				isShow = !isShow;
 
@@ -77,6 +84,12 @@ public class NoticationDemo extends CommonBtnDemo {
 	private FloatNotificationView getFloatView() {
 		if(floatView == null) {
 			floatView = new FloatNotificationView(this.getApplicationContext());
+			floatView.setFloatViewListener(new AppFloatView.OnFloatViewListener() {
+				@Override
+				public void onClick() {
+					ToastUtils.showMessage(mAct, "FloatNotificationView onClick:" + floatView.getTitle());
+				}
+			});
 			floatView.createFloatView(0);
 		}
 		return floatView;
