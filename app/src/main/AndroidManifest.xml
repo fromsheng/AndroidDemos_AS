@@ -170,11 +170,12 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.FloatViewService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".acts.LocalReceiverDemo"></activity>
     </application>
 
 </manifest>
