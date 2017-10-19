@@ -1,6 +1,7 @@
 package com.artion.androiddemos.acts;
 
 import com.artion.androiddemos.R;
+import com.artion.androiddemos.common.MiuiUtils;
 import com.artion.androiddemos.common.NotificationUtils;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.view.AppFloatView;
@@ -36,6 +37,8 @@ public class NoticationDemo extends CommonBtnDemo {
 				// TODO Auto-generated method stub
 				NotificationUtils.showNotification(mAct, "呵呵", btn1.getText().toString());
 				btn1.setText("通知:" + count++);
+
+				MiuiUtils.jumpToPermissionsEditorActivity(mAct);
 			}
 		});
 
