@@ -8,8 +8,12 @@ import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.os.Build;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class AndroidUtils {
@@ -67,5 +71,24 @@ public class AndroidUtils {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+	 */
+	public static int dip2px(Context context, float dpValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
+	}
+
+	/**
+	 * 取得当前系统时间，目前没做细致区分，仅显示"时:分"
+	 * @return
+	 */
+	public static String getCurrentTime() {
+		Calendar calendar = Calendar.getInstance();
+		Date date = calendar.getTime();
+		SimpleDateFormat sf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+		return sf.format(date);
 	}
 }

@@ -2,8 +2,10 @@ package com.artion.androiddemos.view;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -18,8 +20,7 @@ import java.lang.reflect.Method;
  * Created by caijinsheng on 17/10/11.
  */
 
-public class ToastFloatView {
-    private static final String TAG = "ExToast";
+public class ToastFloatView  implements View.OnTouchListener {
 
     public static final int LENGTH_ALWAYS = 0;
     public static final int LENGTH_SHORT = 2;
@@ -27,8 +28,7 @@ public class ToastFloatView {
 
     private Toast toast;
     private Context mContext;
-    private int mDuration = LENGTH_SHORT;
-    private int animations = -1;
+    private int mDuration = LENGTH_LONG;
     private boolean isShow = false;
 
     private Object mTN;
@@ -50,17 +50,17 @@ public class ToastFloatView {
         if (toast == null) {
             toast = new Toast(mContext);
         }
-//            mView = inflate.inflate(R.layout.float_tips_layout, null);
-        mView = MyViewUtils.getFloatNotificationView(context);
+        mView = MyViewUtils.getToastFloatView(context);
 
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hide();
                 ToastUtils.showMessage(context, "ToastFloatView onClick");
             }
         });
 
-        toast.setMargin(0, 0);
+//        mView.setOnTouchListener(this);//MIUI无法移动view，会抛异常，暂无法解决
     }
 
     private Runnable hideRunnable = new Runnable() {
@@ -70,14 +70,17 @@ public class ToastFloatView {
         }
     };
 
+    public void updateView(String title) {
+        MyViewUtils.getMyViewHolder(mView).tvTitle.setText("悬浮窗:" + title);
+        show();
+    }
+
     /**
      * Show the view for the specified duration.
      */
-    public void show(){
-        if (isShow) return;
-//            TextView tv = (TextView)mView.findViewById(R.id.message);
-//            tv.setText("悬浮窗");
-        MyViewUtils.getMyViewHolder(mView).tvTitle.setText("悬浮窗:" + System.currentTimeMillis());
+    private void show(){
+//        if (isShow) return;
+//        MyViewUtils.getMyViewHolder(mView).tvTitle.setText("悬浮窗:" + System.currentTimeMillis());
         toast.setView(mView);
         initTN();
         try {
@@ -88,6 +91,7 @@ public class ToastFloatView {
         isShow = true;
         //判断duration，如果大于#LENGTH_ALWAYS 则设置消失时间
         if (mDuration > LENGTH_ALWAYS) {
+            handler.removeCallbacks(hideRunnable);
             handler.postDelayed(hideRunnable, mDuration * 1000);
         }
     }
@@ -105,6 +109,7 @@ public class ToastFloatView {
             e.printStackTrace();
         }
         isShow = false;
+        handler.removeCallbacks(hideRunnable);
     }
 
     public void setView(View view) {
@@ -129,32 +134,12 @@ public class ToastFloatView {
         return mDuration;
     }
 
-    public void setMargin(float horizontalMargin, float verticalMargin) {
-        toast.setMargin(horizontalMargin,verticalMargin);
-    }
-
-    public float getHorizontalMargin() {
-        return toast.getHorizontalMargin();
-    }
-
-    public float getVerticalMargin() {
-        return toast.getVerticalMargin();
-    }
-
     public void setGravity(int gravity, int xOffset, int yOffset) {
         toast.setGravity(gravity,xOffset,yOffset);
     }
 
     public int getGravity() {
         return toast.getGravity();
-    }
-
-    public int getXOffset() {
-        return toast.getXOffset();
-    }
-
-    public int getYOffset() {
-        return toast.getYOffset();
     }
 
     public static ToastFloatView makeText(Context context, CharSequence text, int duration) {
@@ -164,27 +149,6 @@ public class ToastFloatView {
         exToast.mDuration = duration;
 
         return exToast;
-    }
-
-    public static ToastFloatView makeText(Context context, int resId, int duration)
-            throws Resources.NotFoundException {
-        return makeText(context, context.getResources().getText(resId), duration);
-    }
-
-    public void setText(int resId) {
-        setText(mContext.getText(resId));
-    }
-
-    public void setText(CharSequence s) {
-        toast.setText(s);
-    }
-
-    public int getAnimations() {
-        return animations;
-    }
-
-    public void setAnimations(int animations) {
-        this.animations = animations;
     }
 
     private void initTN() {
@@ -200,25 +164,48 @@ public class ToastFloatView {
             params = (WindowManager.LayoutParams) tnParamsField.get(mTN);
             params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                     | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-
-            /**设置动画*/
-//            if (animations != -1) {
-//                params.windowAnimations = animations;
-//            }
+            params.format = PixelFormat.TRANSLUCENT;// 不设置这个弹出框的透明遮罩显示为黑色
+            params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
             params.windowAnimations = Resources.getSystem().getIdentifier("Animation.SearchBar", "style", "android");// set the animation for the window
-
 
             /**调用tn.show()之前一定要先设置mNextView*/
             Field tnNextViewField = mTN.getClass().getDeclaredField("mNextView");
             tnNextViewField.setAccessible(true);
             tnNextViewField.set(mTN, toast.getView());
-
             mWM = (WindowManager)mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         setGravity(Gravity.TOP,0 ,0);
     }
 
+    private void updateViewPosition(){
+        //更新浮动窗口位置参数
+        params.x=(int) (x-mTouchStartX);
+        params.y=(int) (y-mTouchStartY);
+        mWM.updateViewLayout(toast.getView(), params);  //刷新显示
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        //获取相对屏幕的坐标，即以屏幕左上角为原点
+        x = event.getRawX();
+        y = event.getRawY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:    //捕获手指触摸按下动作
+                //获取相对View的坐标，即以此View左上角为原点
+                mTouchStartX =  event.getX();
+                mTouchStartY =  event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:   //捕获手指触摸移动动作
+                updateViewPosition();
+                break;
+            case MotionEvent.ACTION_UP:    //捕获手指触摸离开动作
+                updateViewPosition();
+                break;
+        }
+        return true;
+    }
 
 }

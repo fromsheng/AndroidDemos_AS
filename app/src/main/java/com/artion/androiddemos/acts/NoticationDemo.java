@@ -19,6 +19,7 @@ import android.view.animation.TranslateAnimation;
 public class NoticationDemo extends CommonBtnDemo {
 
 	private FloatNotificationView floatView;
+	private ToastFloatView toastFloatView;
 
 	int count = 0;
 	boolean isShow = false;
@@ -59,8 +60,8 @@ public class NoticationDemo extends CommonBtnDemo {
 //					}
 //				}).start();
 
-				ToastFloatView toastFloatView = new ToastFloatView(mAct.getApplicationContext());
-				toastFloatView.show();
+//				ToastFloatView toastFloatView = new ToastFloatView(mAct.getApplicationContext());
+				getToastFloatView().updateView("" + System.currentTimeMillis());
 
 				}
 		});
@@ -79,6 +80,13 @@ public class NoticationDemo extends CommonBtnDemo {
 			}
 		});
 		
+	}
+
+	private ToastFloatView getToastFloatView() {
+		if(toastFloatView == null) {
+			toastFloatView = new ToastFloatView(mAct.getApplicationContext());
+		}
+		return toastFloatView;
 	}
 
 	private FloatNotificationView getFloatView() {
