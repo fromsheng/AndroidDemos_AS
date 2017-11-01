@@ -17,6 +17,14 @@ android {
             stl "stlport_static"    //打开.c 的 debug , 下面第 4 点会讲到
         }
     }
+    splits {
+        abi { //处理模拟器安装时报 INSTALL_FAILED_NO_MATCHING_ABIS
+            enable true
+            reset()
+            include 'x86', 'armeabi-v7a'
+            universalApk true
+        }
+    }
 
     sourceSets {
         main {
