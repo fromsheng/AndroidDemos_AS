@@ -3,28 +3,20 @@ package com.artion.androiddemos.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
-import android.os.Binder;
-import android.os.Build;
 import android.os.Handler;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
-import com.artion.androiddemos.common.MyViewUtils;
-import com.artion.androiddemos.common.ReflectUtils;
-import com.artion.androiddemos.common.ToastUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Created by caijinsheng on 17/10/11.
+ * Created by caijinsheng on 17/10/20.
  */
 
-public class ToastFloatView  implements View.OnTouchListener {
-
+public abstract class BaseToastView<T> {
     public static final int LENGTH_ALWAYS = 0;
     public static final int LENGTH_SHORT = 2;
     public static final int LENGTH_LONG = 4;
@@ -39,32 +31,35 @@ public class ToastFloatView  implements View.OnTouchListener {
     private Method hide;
     private WindowManager mWM;
     private WindowManager.LayoutParams params;
-    private View mView;
+    protected View mView;
 
-    private float mTouchStartX;
-    private float mTouchStartY;
-    private float x;
-    private float y;
+    protected T mModel;
+
+    private ToastViewListener mListener = null;
+
 
     private Handler handler = new Handler();
 
-    public ToastFloatView(final Context context){
+    public BaseToastView(final Context context){
         this.mContext = context;
         if (toast == null) {
             toast = new Toast(mContext);
         }
-        mView = MyViewUtils.getToastFloatView(context);
+        mView = initView(context);
 
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hide();
-                ToastUtils.showMessage(context, "ToastFloatView onClick");
+                if(mListener != null) {
+                    mListener.onClick();
+                }
             }
         });
 
-//        mView.setOnTouchListener(this);//MIUI无法移动view，会抛异常，暂无法解决
     }
+
+    public abstract View initView(Context context);
 
     private Runnable hideRunnable = new Runnable() {
         @Override
@@ -73,26 +68,25 @@ public class ToastFloatView  implements View.OnTouchListener {
         }
     };
 
-    public void updateView(String title) {
-        MyViewUtils.getMyViewHolder(mView).tvTitle.setText("悬浮窗:" + title);
-        show();
+    /**
+     * 更新界面，之后需要调用show（）
+     * @param model
+     */
+    public abstract void updateView(T model);
+
+    public T getModel() {
+        return mModel;
     }
 
     /**
      * Show the view for the specified duration.
      */
-    private void show(){
+    public void show(){
 //        if (isShow) return;
-//        MyViewUtils.getMyViewHolder(mView).tvTitle.setText("悬浮窗:" + System.currentTimeMillis());
         toast.setView(mView);
         initTN();
         try {
-            Class[] params = show.getParameterTypes();
-            if(params == null || params.length <= 0) {
-                show.invoke(mTN);
-            } else {//兼容8.0
-                show.invoke(mTN, new Binder());
-            }
+            show.invoke(mTN);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,34 +144,19 @@ public class ToastFloatView  implements View.OnTouchListener {
         return toast.getGravity();
     }
 
-    public static ToastFloatView makeText(Context context, CharSequence text, int duration) {
-        Toast toast = Toast.makeText(context,text,Toast.LENGTH_SHORT);
-        ToastFloatView exToast = new ToastFloatView(context);
-        exToast.toast = toast;
-        exToast.mDuration = duration;
-
-        return exToast;
-    }
-
     private void initTN() {
         try {
             Field tnField = toast.getClass().getDeclaredField("mTN");
             tnField.setAccessible(true);
             mTN = tnField.get(toast);
-//            show = mTN.getClass().getMethod("show");
-//            hide = mTN.getClass().getMethod("hide");
-            show = ReflectUtils.getMethod(mTN.getClass(), "show");
-            hide = ReflectUtils.getMethod(mTN.getClass(), "hide");
+            show = mTN.getClass().getMethod("show");
+            hide = mTN.getClass().getMethod("hide");
 
             Field tnParamsField = mTN.getClass().getDeclaredField("mParams");
             tnParamsField.setAccessible(true);
             params = (WindowManager.LayoutParams) tnParamsField.get(mTN);
             params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                    | WindowManager.LayoutParams.FLAG_FULLSCREEN
-//                    | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
-//                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-            ;
+                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
             params.format = PixelFormat.TRANSLUCENT;// 不设置这个弹出框的透明遮罩显示为黑色
             params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
             params.windowAnimations = Resources.getSystem().getIdentifier("Animation.SearchBar", "style", "android");// set the animation for the window
@@ -187,41 +166,14 @@ public class ToastFloatView  implements View.OnTouchListener {
             tnNextViewField.setAccessible(true);
             tnNextViewField.set(mTN, toast.getView());
             mWM = (WindowManager)mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-            if(Build.VERSION.SDK_INT >= 11) {
-                getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setGravity(Gravity.TOP,0 ,0);
+//        setGravity(Gravity.TOP,0 ,0);
     }
 
-    private void updateViewPosition(){
-        //更新浮动窗口位置参数
-        params.x=(int) (x-mTouchStartX);
-        params.y=(int) (y-mTouchStartY);
-        mWM.updateViewLayout(toast.getView(), params);  //刷新显示
+    public interface ToastViewListener {
+        void onClick();
     }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        //获取相对屏幕的坐标，即以屏幕左上角为原点
-        x = event.getRawX();
-        y = event.getRawY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:    //捕获手指触摸按下动作
-                //获取相对View的坐标，即以此View左上角为原点
-                mTouchStartX =  event.getX();
-                mTouchStartY =  event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:   //捕获手指触摸移动动作
-                updateViewPosition();
-                break;
-            case MotionEvent.ACTION_UP:    //捕获手指触摸离开动作
-                updateViewPosition();
-                break;
-        }
-        return true;
-    }
-
 }
