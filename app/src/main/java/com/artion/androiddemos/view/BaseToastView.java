@@ -3,11 +3,14 @@ package com.artion.androiddemos.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
+import android.os.Binder;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.artion.androiddemos.common.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -86,7 +89,12 @@ public abstract class BaseToastView<T> {
         toast.setView(mView);
         initTN();
         try {
-            show.invoke(mTN);
+            Class[] params = show.getParameterTypes();
+            if(params == null || params.length <= 0) {
+                show.invoke(mTN);
+            } else {//兼容8.0
+                show.invoke(mTN, new Binder());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,8 +157,8 @@ public abstract class BaseToastView<T> {
             Field tnField = toast.getClass().getDeclaredField("mTN");
             tnField.setAccessible(true);
             mTN = tnField.get(toast);
-            show = mTN.getClass().getMethod("show");
-            hide = mTN.getClass().getMethod("hide");
+            show = ReflectUtils.getMethod(mTN.getClass(), "show");
+            hide = ReflectUtils.getMethod(mTN.getClass(), "hide");
 
             Field tnParamsField = mTN.getClass().getDeclaredField("mParams");
             tnParamsField.setAccessible(true);
