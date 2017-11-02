@@ -48,7 +48,19 @@ public class ToastFloatView  implements View.OnTouchListener {
 
     private Handler handler = new Handler();
 
-    public ToastFloatView(final Context context){
+    private static ToastFloatView instance = null;
+
+    public static ToastFloatView getInstance(Context context) {
+        if(instance == null) {
+            instance = new ToastFloatView(context.getApplicationContext());//防止context泄漏
+        }
+        return instance;
+    }
+
+    private ToastFloatView(final Context context){
+        if (instance != null) { //防止反射获取多个对象的漏洞
+            throw new RuntimeException();
+        }
         this.mContext = context;
         if (toast == null) {
             toast = new Toast(mContext);

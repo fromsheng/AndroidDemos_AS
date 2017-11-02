@@ -63,8 +63,8 @@ public class NoticationDemo extends CommonBtnDemo {
 //					}
 //				}).start();
 
-//				ToastFloatView toastFloatView = new ToastFloatView(mAct.getApplicationContext());
-				getToastFloatView().updateView("" + System.currentTimeMillis());
+//				getToastFloatView().updateView("" + System.currentTimeMillis());//仅此activity内单例
+				ToastFloatView.getInstance(mAct).updateView("" + System.currentTimeMillis());//全局单例
 
 				}
 		});
@@ -85,12 +85,12 @@ public class NoticationDemo extends CommonBtnDemo {
 		
 	}
 
-	private ToastFloatView getToastFloatView() {
-		if(toastFloatView == null) {
-			toastFloatView = new ToastFloatView(mAct.getApplicationContext());
-		}
-		return toastFloatView;
-	}
+//	private ToastFloatView getToastFloatView() {
+//		if(toastFloatView == null) {
+//			toastFloatView = new ToastFloatView(mAct.getApplicationContext());
+//		}
+//		return toastFloatView;
+//	}
 
 	private FloatNotificationView getFloatView() {
 		if(floatView == null) {
