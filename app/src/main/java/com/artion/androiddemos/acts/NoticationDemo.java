@@ -5,6 +5,7 @@ import com.artion.androiddemos.common.MiuiUtils;
 import com.artion.androiddemos.common.NotificationUtils;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.view.AppFloatView;
+import com.artion.androiddemos.view.BaseToastView;
 import com.artion.androiddemos.view.FloatNotificationView;
 import com.artion.androiddemos.view.ToastFloatView;
 
@@ -64,9 +65,16 @@ public class NoticationDemo extends CommonBtnDemo {
 //				}).start();
 
 //				getToastFloatView().updateView("" + System.currentTimeMillis());//仅此activity内单例
-				ToastFloatView.getInstance(mAct).updateView("" + System.currentTimeMillis());//全局单例
+				ToastFloatView.getInstance(mAct).updateToastView("" + System.currentTimeMillis());//全局单例
 
 				}
+		});
+
+		ToastFloatView.getInstance(mAct).setToastViewListener(new BaseToastView.ToastViewListener() {
+			@Override
+			public void onClick() {
+				ToastUtils.showMessage(mAct, ToastFloatView.getInstance(mAct).getModel());
+			}
 		});
 
 		btn3.setText("悬浮通知");

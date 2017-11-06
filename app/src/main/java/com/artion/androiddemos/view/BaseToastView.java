@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
+ * 通用ToastFloatView抽象类
  * Created by caijinsheng on 17/10/20.
  */
 
@@ -24,22 +25,21 @@ public abstract class BaseToastView<T> {
     public static final int LENGTH_SHORT = 2;
     public static final int LENGTH_LONG = 4;
 
-    private Toast toast;
-    private Context mContext;
+    protected Toast toast;
+    protected Context mContext;
     private int mDuration = LENGTH_LONG;
     private boolean isShow = false;
 
     private Object mTN;
     private Method show;
     private Method hide;
-    private WindowManager mWM;
-    private WindowManager.LayoutParams params;
+    protected WindowManager mWM;
+    protected WindowManager.LayoutParams params;
     protected View mView;
 
     protected T mModel;
 
     private ToastViewListener mListener = null;
-
 
     private Handler handler = new Handler();
 
@@ -62,6 +62,10 @@ public abstract class BaseToastView<T> {
 
     }
 
+    public void setToastViewListener(ToastViewListener listener) {
+        this.mListener = listener;
+    }
+
     public abstract View initView(Context context);
 
     private Runnable hideRunnable = new Runnable() {
@@ -72,10 +76,20 @@ public abstract class BaseToastView<T> {
     };
 
     /**
-     * 更新界面，之后需要调用show（）
+     * 更新ToastView并show
      * @param model
      */
-    public abstract void updateView(T model);
+    public void updateToastView(T model) {
+        this.mModel = model;
+        updateView(model);
+        show();
+    }
+
+    /**
+     * 更新界面
+     * @param model
+     */
+    protected abstract void updateView(T model);
 
     public T getModel() {
         return mModel;
@@ -164,6 +178,8 @@ public abstract class BaseToastView<T> {
             tnParamsField.setAccessible(true);
             params = (WindowManager.LayoutParams) tnParamsField.get(mTN);
             params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
                     | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
             params.format = PixelFormat.TRANSLUCENT;// 不设置这个弹出框的透明遮罩显示为黑色
             params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
@@ -178,7 +194,7 @@ public abstract class BaseToastView<T> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        setGravity(Gravity.TOP,0 ,0);
+        setGravity(Gravity.TOP,0 ,0);
     }
 
     public interface ToastViewListener {
