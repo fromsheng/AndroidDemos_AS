@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.artion.androiddemos.R;
+import com.artion.androiddemos.acts.ActJumpA;
 import com.artion.androiddemos.acts.ActJumpB;
 import com.artion.androiddemos.utils.DebugTool;
 
@@ -50,6 +51,13 @@ public class FragmentA extends BaseFragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(mAct, ActJumpB.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				mAct.startActivityForResult(intent, 11);
+			}
+		});
+		btn3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mAct, ActJumpA.class);
 				mAct.startActivityForResult(intent, 11);
 			}
 		});

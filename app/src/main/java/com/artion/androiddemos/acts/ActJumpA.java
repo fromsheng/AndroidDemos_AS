@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.artion.androiddemos.R;
 import com.artion.androiddemos.fragment.BaseFragment;
+import com.artion.androiddemos.fragment.FloatFragment;
 import com.artion.androiddemos.fragment.FragmentA;
 import com.artion.androiddemos.utils.DebugTool;
 
@@ -22,8 +23,11 @@ public class ActJumpA extends FragmentActivity {
 		
 		BaseFragment fm = new FragmentA();
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(R.id.fragment_container, fm);
-		ft.commitAllowingStateLoss();
+		ft.add(R.id.fragment_container, fm);
+		BaseFragment floatFragment = new FloatFragment();
+		ft.add(R.id.fragment_container, floatFragment, "float");
+		ft.commit();
+
 
 		JSONArray jsonArray = new JSONArray();
 		jsonArray.put("111");
