@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -75,7 +76,14 @@ public class NotificationUtils {
 		Notification notification = builder.build();
 
 		//声音
-		notification.defaults |= Notification.DEFAULT_SOUND;
+//		notification.defaults |= Notification.DEFAULT_SOUND;
+		int resId = AndroidUtils.getResourceId(context, "raw", "beep");
+		if(resId != 0) {
+			Uri soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + resId);
+			notification.sound = soundUri;
+		} else {
+			notification.defaults |= Notification.DEFAULT_SOUND;
+		}
 
 		//震动
 		notification.defaults |= Notification.DEFAULT_VIBRATE;

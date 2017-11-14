@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.os.Build;
+import android.text.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -90,5 +91,14 @@ public class AndroidUtils {
 		Date date = calendar.getTime();
 		SimpleDateFormat sf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 		return sf.format(date);
+	}
+
+	public static int getResourceId(Context context, String resDir, String idName) {
+		if(TextUtils.isEmpty(resDir) ||  TextUtils.isEmpty(idName) || context == null) {
+			return 0;
+		}
+
+		return context.getResources().getIdentifier(idName, resDir, context.getPackageName());
+
 	}
 }
