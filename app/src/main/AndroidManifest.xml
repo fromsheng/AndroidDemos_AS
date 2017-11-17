@@ -176,6 +176,7 @@
             android:exported="false" />
 
         <activity android:name=".acts.LocalReceiverDemo"></activity>
+        <activity android:name=".acts.RecyclerGridDemo"></activity>
     </application>
 
 </manifest>
