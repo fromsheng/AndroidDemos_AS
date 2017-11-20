@@ -24,6 +24,7 @@ public class Demos extends BaseActivity {
 	
 	private void initActNames() {
 		actNames = new ArrayList<String>();
+		actNames.add("ActIndicatorDemo");
 		actNames.add("RecyclerGridDemo");
 		actNames.add("LocalReceiverDemo");
 		actNames.add("ActConstraintsDemo");

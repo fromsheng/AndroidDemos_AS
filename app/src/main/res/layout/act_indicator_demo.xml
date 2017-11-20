@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AVLoadingIndicatorView.Large"
+        app:indicatorColor="@color/highlighttext"
+        app:indicatorName="BallPulseIndicator"
+        />
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AVLoadingIndicatorView.Small"
+        app:indicatorColor="@color/highlighttext"
+        app:indicatorName="BallClipRotateMultipleIndicator"
+        />
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AVLoadingIndicatorView.Small"
+        app:indicatorColor="@color/highlighttext"
+        app:indicatorName="BallZigZagDeflectIndicator"
+        />
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AVLoadingIndicatorView.Large"
+        app:indicatorColor="@color/highlighttext"
+        app:indicatorName="BallScaleMultipleIndicator"
+        />
+
+</LinearLayout>
