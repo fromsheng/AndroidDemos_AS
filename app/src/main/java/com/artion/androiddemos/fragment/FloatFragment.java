@@ -44,7 +44,7 @@ public class FloatFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fag_floatview,null);
         dm = getResources().getDisplayMetrics();
         screenWidth = dm.widthPixels;
-        screenHeight = dm.heightPixels-240;
+        screenHeight = dm.heightPixels;
         dragView = view.findViewById(R.id.floatview);
         dragView.setOnTouchListener(new View.OnTouchListener() {
             @Override
