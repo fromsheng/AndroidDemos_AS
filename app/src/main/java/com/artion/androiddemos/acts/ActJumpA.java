@@ -25,8 +25,12 @@ public class ActJumpA extends FragmentActivity {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ft.add(R.id.fragment_container, fm);
 		BaseFragment floatFragment = new FloatFragment();
-		getWindow().getDecorView().setId(R.id.tag_view_double_click);
-		ft.add(getWindow().getDecorView().getId(), floatFragment, "float");
+		int decorViewId = getWindow().getDecorView().getId();
+		if(decorViewId == -1) {
+			decorViewId = R.id.tag_view_double_click;
+			getWindow().getDecorView().setId(decorViewId);
+		}
+		ft.add(decorViewId, floatFragment, "float");
 		ft.commit();
 
 
