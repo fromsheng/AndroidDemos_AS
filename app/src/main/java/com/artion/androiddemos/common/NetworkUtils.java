@@ -3,6 +3,7 @@ package com.artion.androiddemos.common;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 
 /**
  * Network相关常用操作类
@@ -24,5 +25,23 @@ public class NetworkUtils {
 		
 		NetworkInfo ni = cm.getActiveNetworkInfo();
 		return ni != null && "WIFI".equalsIgnoreCase(ni.getTypeName()) && ni.isAvailable();
+	}
+
+	public static boolean isTelephonyCalling(Context context){
+		if(context == null) {
+			return false;
+		}
+		try {
+			boolean calling = false;
+			TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+			if(TelephonyManager.CALL_STATE_OFFHOOK == telephonyManager.getCallState()
+					|| TelephonyManager.CALL_STATE_RINGING == telephonyManager.getCallState()){
+				calling = true;
+			}
+			return calling;
+		} catch (Exception e) {
+
+		}
+		return false;
 	}
 }
