@@ -1,6 +1,8 @@
 package com.artion.androiddemos.view;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
 /**
@@ -72,5 +74,58 @@ public class FloatViewUtils {
             FloatViewUtils.FLOAT_BOTTOM = screenHeight;
             FloatViewUtils.FLOAT_TOP = FloatViewUtils.FLOAT_BOTTOM - v.getHeight();
         }
+    }
+
+    public static void fixFloatSide(View view,
+                                    int screenWidth, int screenHeight) {
+        try {
+            int halfWidth = screenWidth / 2;
+            int viewCenter = FLOAT_LEFT + (view.getWidth() / 2);
+            if (viewCenter > halfWidth) {
+                int diffR = screenWidth - view.getRight();
+                if (diffR > 0) {
+                    startTranslate(view, 0, diffR, diffR);
+                    FLOAT_LEFT += diffR;
+                }
+            } else {
+                if (FLOAT_LEFT > 0) {
+                    startTranslate(view, 0, -FLOAT_LEFT, FLOAT_LEFT);
+                    FLOAT_LEFT = 0;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private static void startTranslate(final View view, final int fromX, final int toX, int duration) {
+        TranslateAnimation animation = new TranslateAnimation(fromX, toX, 0, 0);
+        animation.setDuration(duration);
+//		animation.setFillAfter(true);//只是将view移动到了目标位置，但是view绑定的点击事件还在原来位置
+        animation.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+                view.setEnabled(false);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                int l = view.getLeft() + (toX - fromX);
+                int width = view.getWidth();
+                int height = view.getHeight();
+                int t = view.getTop();
+                view.clearAnimation();
+
+                view.layout(l, t, l + width, t + height);
+                view.setEnabled(true);
+            }
+        });
+        view.startAnimation(animation);
     }
 }

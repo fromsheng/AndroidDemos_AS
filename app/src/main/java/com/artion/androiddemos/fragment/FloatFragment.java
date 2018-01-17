@@ -69,6 +69,7 @@ public class FloatFragment extends BaseFragment {
                         break;
                     case MotionEvent.ACTION_UP:
                         if (FloatViewUtils.needIntercept(startX, startY, lastX, lastY)) {
+                            FloatViewUtils.fixFloatSide(v, screenWidth, screenHeight);
                             return true;
                         }
                         break;
