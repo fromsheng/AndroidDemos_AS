@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
+import com.artion.androiddemos.utils.DebugTool;
+
 /**
  * Network相关常用操作类
  * @author jinsheng_cai
@@ -34,6 +36,7 @@ public class NetworkUtils {
 		try {
 			boolean calling = false;
 			TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+			DebugTool.info("NetworkUtils", "isTelephonyCalling getCallState=" + telephonyManager.getCallState());
 			if(TelephonyManager.CALL_STATE_OFFHOOK == telephonyManager.getCallState()
 					|| TelephonyManager.CALL_STATE_RINGING == telephonyManager.getCallState()){
 				calling = true;

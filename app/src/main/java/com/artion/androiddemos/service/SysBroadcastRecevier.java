@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import com.artion.androiddemos.common.AndroidUtils;
+import com.artion.androiddemos.common.NetworkUtils;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.utils.DebugTool;
 import com.artion.androiddemos.utils.DeviceTool;
@@ -55,10 +56,16 @@ public class SysBroadcastRecevier extends BroadcastReceiver {
             DebugTool.info(TAG, "add packageName: " + packageName);
             ToastUtils.showMessage(context, "add packageName: " + packageName);
 
+
         } else if(action.equals(Intent.ACTION_PACKAGE_REPLACED)) {
             String packageName=intent.getDataString();
             DebugTool.info(TAG, "replace packageName: " + packageName);
             ToastUtils.showMessage(context, "replace packageName: " + packageName);
+        } else if(action.equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
+            DebugTool.info(TAG, "ACTION_NEW_OUTGOING_CALL: ");
+        } else if(action.equals("android.intent.action.PHONE_STATE")){
+            DebugTool.info("NetworkUtils", "电话状态：" + NetworkUtils.isTelephonyCalling(context));
+
         }
     }
 }
