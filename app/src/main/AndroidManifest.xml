@@ -173,6 +173,7 @@
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
                 <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="com.artion.androiddemos.service.ACTION.DELETE_NOTIFICATION" />
             </intent-filter>
         </receiver>
 
@@ -187,11 +188,12 @@
         <service
             android:name=".service.FloatViewService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity android:name=".acts.LocalReceiverDemo"></activity>
         <activity android:name=".acts.RecyclerGridDemo"></activity>
         <activity android:name=".acts.ActIndicatorDemo"></activity>
+        <activity android:name=".acts.MyKotlinAct"></activity>
     </application>
 
 </manifest>

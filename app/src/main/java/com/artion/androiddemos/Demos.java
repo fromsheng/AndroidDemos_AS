@@ -1,8 +1,5 @@
 package com.artion.androiddemos;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
@@ -12,10 +9,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.artion.androiddemos.common.ToastUtils;
-import com.artion.androiddemos.service.FloatViewService;
 import com.artion.androiddemos.utils.DebugTool;
-import com.artion.androiddemos.utils.JniUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Demos extends BaseActivity {
 	
@@ -24,6 +21,7 @@ public class Demos extends BaseActivity {
 	
 	private void initActNames() {
 		actNames = new ArrayList<String>();
+		actNames.add("MyKotlinAct");
 		actNames.add("ActIndicatorDemo");
 		actNames.add("RecyclerGridDemo");
 		actNames.add("LocalReceiverDemo");
