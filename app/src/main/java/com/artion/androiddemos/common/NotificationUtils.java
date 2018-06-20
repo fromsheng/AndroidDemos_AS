@@ -1,6 +1,7 @@
 package com.artion.androiddemos.common;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,11 +14,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.artion.androiddemos.R;
 import com.artion.androiddemos.acts.AnimationDemo;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.artion.androiddemos.service.SysBroadcastRecevier;
 
 /**
  * Notification相关常用操作类
@@ -29,13 +26,31 @@ public class NotificationUtils {
 	public static void showNotification(Context context, String title, String content) {
 		Bitmap btm = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.message_img_new_normal);
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.common_img_toolbarnew_normal)
+		NotificationCompat.Builder builder = null;
+		//判断是否是8.0上设备
+		if(Build.VERSION.SDK_INT >= 26) {
+			String channelID = "1";
+			String channelName = "papush";
+			try {
+				NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
+				NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+				manager.createNotificationChannel(channel);
+				builder = new NotificationCompat.Builder(context, channelID);
+			} catch (Throwable e) {
+				builder = new NotificationCompat.Builder(context);
+			}
+		} else {
+			builder = new NotificationCompat.Builder(context);
+		}
+
+		//TODO targetSDK>=26后，需要调整Builder()增加channelId，原Deprecated
+		builder.setSmallIcon(R.drawable.common_img_toolbarnew_normal)
 				.setContentTitle(title)
 				.setContentText(content);
-		mBuilder.setTicker("微信红包");//第一次提示消息的时候显示在通知栏上
-		mBuilder.setNumber(12);
-		mBuilder.setLargeIcon(btm);
-		mBuilder.setAutoCancel(true);//自己维护通知的消失
+		builder.setTicker("微信红包");//第一次提示消息的时候显示在通知栏上
+		builder.setNumber(12);
+		builder.setLargeIcon(btm);
+		builder.setAutoCancel(true);//自己维护通知的消失
 
 		//构建一个Intent
 		Intent resultIntent = new Intent(context,
@@ -45,10 +60,21 @@ public class NotificationUtils {
 				context, 0, resultIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		// 设置通知主题的意图
-		mBuilder.setContentIntent(resultPendingIntent);
+		builder.setContentIntent(resultPendingIntent);
+
+		Intent delIntent = new Intent("com.artion.androiddemos.service.ACTION.DELETE_NOTIFICATION");
+		delIntent.setClass(context, SysBroadcastRecevier.class);
+		PendingIntent delPI = PendingIntent.getBroadcast(context, 0, delIntent, 0);
+		builder.setDeleteIntent(delPI);
+
 		//获取通知管理器对象
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.notify(0, mBuilder.build());
+		int notifyId = (int) (System.currentTimeMillis() % 10000000);
+//		if(Build.VERSION.SDK_INT >= 24) {//TODO 设置不收起通知添加如下代码
+//			mBuilder.setGroup("push");
+//			mBuilder.setGroupSummary(true);
+//		}
+		mNotificationManager.notify(notifyId, builder.build());
 	}
 
 	public static void showNotification(Context context, int smallIcon, String title, String content, PendingIntent pendingIntent, int notifyId) {
