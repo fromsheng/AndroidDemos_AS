@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.artion.androiddemos.BaseActivity;
 import com.artion.androiddemos.Demos;
 import com.artion.androiddemos.R;
+import com.artion.androiddemos.common.AndroidUtils;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.common.ViewUtils;
 import com.artion.androiddemos.common.ViewUtils.OnViewClickListener;
@@ -26,6 +27,7 @@ import com.artion.androiddemos.dialog.KdAlertBuilder.KdAlertItemListener;
 import com.artion.androiddemos.domain.ActInterfaceModel;
 import com.artion.androiddemos.highlight.HighLightTextViewDemo;
 import com.artion.androiddemos.impl.ActInterface;
+import com.artion.androiddemos.service.FloatViewService;
 import com.artion.androiddemos.service.SysBroadcastRecevier;
 import com.artion.androiddemos.utils.ActivityIntentTools;
 import com.artion.androiddemos.utils.DebugTool;
@@ -48,21 +50,37 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 			
 			@Override
 			public void onClick(View v) {
-				ToastUtils.showMessage(mAct, "setDrawableLeftListener");				
+				ToastUtils.showMessage(mAct, "setDrawableLeftListener");
+
+				Intent intent = new Intent(mAct, FloatViewService.class);
+				startService(intent);
 			}
 		});
 		tvDrawable.setDrawableTopListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				ToastUtils.showMessage(mAct, "setDrawableTopListener");				
+				ToastUtils.showMessage(mAct, "setDrawableTopListener");
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						DebugTool.info(tag, "isServiceRunning=" +
+								AndroidUtils.isServiceRunning(
+										mAct,
+										"com.artion.androiddemos.service.FloatViewService"));
+					}
+				}).start();
+
 			}
 		});
 		tvDrawable.setDrawableRightListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				ToastUtils.showMessage(mAct, "setDrawableRightListener");				
+				ToastUtils.showMessage(mAct, "setDrawableRightListener");
+
+				Intent intent = new Intent(mAct, FloatViewService.class);
+				stopService(intent);
 			}
 		});
 		tvDrawable.setDrawableBottomListener(new OnClickListener() {

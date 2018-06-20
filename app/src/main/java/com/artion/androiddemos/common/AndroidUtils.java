@@ -1,5 +1,6 @@
 package com.artion.androiddemos.common;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,10 @@ import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.artion.androiddemos.utils.DebugTool;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,6 +36,12 @@ public class AndroidUtils {
 		if(context == null) {
 			return;
 		}
+		ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+
+
+		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                List<ActivityManager.RunningTaskInfo> taskInfos = am.getRunningTasks(1);
 
 		PackageManager pm = context.getPackageManager();
 		if(pm == null) {
@@ -100,5 +110,36 @@ public class AndroidUtils {
 
 		return context.getResources().getIdentifier(idName, resDir, context.getPackageName());
 
+	}
+
+	/**
+	 * 判断服务是否开启
+	 *
+	 * @return
+	 */
+	public static boolean isServiceRunning(Context context, String serviceClsName) {
+		long begin = System.currentTimeMillis();
+		if (context == null || TextUtils.isEmpty(serviceClsName)) {
+			return false;
+		}
+		try {
+			ActivityManager myManager = (ActivityManager) context
+					.getSystemService(Context.ACTIVITY_SERVICE);
+			ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
+					.getRunningServices(Integer.MAX_VALUE);
+			if(runningService != null && !runningService.isEmpty()) {
+				for (int i = 0; i < runningService.size(); i++) {
+					if (serviceClsName
+							.equals(runningService.get(i).service.getClassName().toString())) {
+						long end = System.currentTimeMillis();
+						DebugTool.info("isServiceRunning", "isServiceRunning used " + (end-begin));
+						return true;
+					}
+				}
+			}
+		} catch (Exception e) {
+
+		}
+		return false;
 	}
 }
