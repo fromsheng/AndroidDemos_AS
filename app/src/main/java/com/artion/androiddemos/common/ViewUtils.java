@@ -189,4 +189,16 @@ public class ViewUtils {
         set.addAnimation(scaleAnim);
         view.startAnimation(set);
 	}
+
+	// If the package id is 0x00 or 0x01, it's either an undefined package
+	// or a framework id
+    //    if ((key >>> 24) < 2) {
+	//	throw new IllegalArgumentException("The key must be an application-specific "
+	//			+ "resource id.");
+	public static int generateApplicationSpecificViewId(int diff) {
+        if(diff < 0) {
+            diff = 0;
+        }
+		return (diff + 2) << 24;
+	}
 }
