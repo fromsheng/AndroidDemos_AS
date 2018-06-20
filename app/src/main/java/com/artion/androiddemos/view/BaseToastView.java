@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -95,12 +97,29 @@ public abstract class BaseToastView<T> {
         return mModel;
     }
 
+    private static void setContext(@NonNull View view, @NonNull Context context) {
+        try {
+            Field field = View.class.getDeclaredField("mContext");
+            field.setAccessible(true);
+            field.set(view, context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Show the view for the specified duration.
      */
     public void show(){
 //        if (isShow) return;
         toast.setView(mView);
+
+        //TODO 兼容targetSDK>=26时7.1.1+抛异常导致crash
+        //Unable to add window -- token android.os.Binder@c7b20db is not valid; is your activity
+        if(Build.VERSION.SDK_INT >= 25) {
+            setContext(mView, new SafeToastContext(mContext, toast));
+        }
+
         initTN();
         try {
             Class[] params = show.getParameterTypes();
@@ -177,6 +196,7 @@ public abstract class BaseToastView<T> {
             Field tnParamsField = mTN.getClass().getDeclaredField("mParams");
             tnParamsField.setAccessible(true);
             params = (WindowManager.LayoutParams) tnParamsField.get(mTN);
+//            params.type = WindowManager.LayoutParams.TYPE_PHONE;
             params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                     | WindowManager.LayoutParams.FLAG_FULLSCREEN
 //                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
