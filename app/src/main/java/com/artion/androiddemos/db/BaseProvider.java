@@ -67,52 +67,74 @@ public abstract class BaseProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+
+        String tableName = getTableName(uri);
+        if (tableName == null) {
+            throw new IllegalArgumentException("Unsupported URI:" + uri);
+        }
         try {
-            String tableName = getTableName(uri);
-            if (tableName == null) {
-                throw new IllegalArgumentException("Unsupported URI:" + uri);
+            sqLiteDatabase.beginTransaction();
+            long row = sqLiteDatabase.insert(tableName, null, values);
+            sqLiteDatabase.setTransactionSuccessful();
+            if(row > 0) {
+                context.getContentResolver().notifyChange(uri, null);
             }
-            sqLiteDatabase.insert(tableName, null, values);
-            context.getContentResolver().notifyChange(uri, null);
             return uri;
         } catch (Exception e) {
 
+        } finally {
+            if(sqLiteDatabase != null) {
+                sqLiteDatabase.endTransaction();
+            }
         }
         return null;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+
+        String tableName = getTableName(uri);
+        if (tableName == null) {
+            throw new IllegalArgumentException("Unsupported URI:" + uri);
+        }
         try {
-            String tableName = getTableName(uri);
-            if (tableName == null) {
-                throw new IllegalArgumentException("Unsupported URI:" + uri);
-            }
+            sqLiteDatabase.beginTransaction();
             int count = sqLiteDatabase.delete(tableName, selection, selectionArgs);
+            sqLiteDatabase.setTransactionSuccessful();
             if (count > 0) {
                 context.getContentResolver().notifyChange(uri, null);
             }
             return count;
         } catch (Exception e) {
 
+        } finally {
+            if(sqLiteDatabase != null) {
+                sqLiteDatabase.endTransaction();
+            }
         }
         return -1;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        String tableName = getTableName(uri);
+        if (tableName == null) {
+            throw new IllegalArgumentException("Unsupported URI:" + uri);
+        }
         try {
-            String tableName = getTableName(uri);
-            if (tableName == null) {
-                throw new IllegalArgumentException("Unsupported URI:" + uri);
-            }
+            sqLiteDatabase.beginTransaction();
             int row = sqLiteDatabase.update(tableName, values, selection, selectionArgs);
+            sqLiteDatabase.setTransactionSuccessful();
             if (row > 0) {
                 context.getContentResolver().notifyChange(uri, null);
             }
             return row;
         } catch (Exception e) {
 
+        } finally {
+            if(sqLiteDatabase != null) {
+                sqLiteDatabase.endTransaction();
+            }
         }
         return -1;
     }
