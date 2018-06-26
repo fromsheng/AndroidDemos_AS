@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 /**
@@ -17,6 +19,13 @@ import java.util.Properties;
  */
 
 public class MiuiUtils {
+
+    //检测MIUI
+    private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
+    private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
+    private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+
+
     /**
      * 跳转到MIUI应用权限设置页面
      *
@@ -58,14 +67,32 @@ public class MiuiUtils {
             try {
                 Properties prop = new Properties();
                 prop.load(new FileInputStream(new File(Environment.getRootDirectory(), "build.prop")));
-                return prop.getProperty("ro.miui.ui.version.code", null) != null
-                        || prop.getProperty("ro.miui.ui.version.name", null) != null
-                        || prop.getProperty("ro.miui.internal.storage", null) != null;
+                return prop.getProperty(KEY_MIUI_VERSION_CODE, null) != null
+                        || prop.getProperty(KEY_MIUI_VERSION_NAME, null) != null
+                        || prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null;
             } catch (IOException e) {
                 e.printStackTrace();
+
+                try {//兼容MIUI8.0 /system/build.prop (Permission denied)
+                    return !TextUtils.isEmpty(getSystemProperty(KEY_MIUI_VERSION_CODE, ""))
+                            || !TextUtils.isEmpty(getSystemProperty(KEY_MIUI_VERSION_NAME, ""))
+                            || !TextUtils.isEmpty(getSystemProperty(KEY_MIUI_INTERNAL_STORAGE, ""));
+                } catch (Exception e1) {
+                    return false;
+                }
             }
 
         }
         return false;
+    }
+
+    private static String getSystemProperty(String key, String defaultValue) {
+        try {
+            Class<?> clz = Class.forName("android.os.SystemProperties");
+            Method get = clz.getMethod("get", String.class, String.class);
+            return (String) get.invoke(clz, key, defaultValue);
+        } catch (Exception e) {
+        }
+        return defaultValue;
     }
 }
