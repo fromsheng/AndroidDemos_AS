@@ -52,6 +52,11 @@ public class NotificationUtils {
 		builder.setLargeIcon(btm);
 		builder.setAutoCancel(true);//自己维护通知的消失
 
+//		builder.setPriority(Notification.PRIORITY_HIGH);
+//		PendingIntent pendingIntent1 = PendingIntent.getActivity(context, 1,// requestCode是0的时候三星手机点击通知栏通知不起作用
+//				new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+//		builder.setFullScreenIntent(pendingIntent1, true);
+
 		//构建一个Intent
 		Intent resultIntent = new Intent(context,
 				AnimationDemo.class);
