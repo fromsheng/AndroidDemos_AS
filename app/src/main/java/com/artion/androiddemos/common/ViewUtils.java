@@ -1,10 +1,17 @@
 package com.artion.androiddemos.common;
 
+import android.content.Context;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.artion.androiddemos.R;
 import com.artion.androiddemos.common.TimerUtils.TimerListener;
@@ -201,4 +208,38 @@ public class ViewUtils {
         }
 		return (diff + 2) << 24;
 	}
+
+	public static void addTargetView(Context context, View targetView, View badgeView) {
+		ViewGroup.LayoutParams lp = targetView.getLayoutParams();
+		ViewParent parent = targetView.getParent();
+		FrameLayout container = new FrameLayout(context);
+
+		// TODO verify that parent is indeed a ViewGroup
+		ViewGroup group = (ViewGroup) parent;
+		badgeView.setVisibility(View.GONE);
+		if(group instanceof RelativeLayout) {
+			group.addView(badgeView, lp);
+		} else {
+
+			int index = group.indexOfChild(targetView);
+
+			group.removeView(targetView);
+			group.addView(container, index, lp);
+
+			container.addView(targetView);
+			container.addView(badgeView);
+		}
+		group.invalidate();
+	}
+
+	public static void setViewLayoutParams(View targetView, View extraView, int width, int height, int gravity) {
+		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//		lp.width = targetView.getWidth() - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, targetView.getResources().getDisplayMetrics());
+		lp.width = width;
+		lp.height = height;
+		lp.gravity = gravity;
+//      lp.setMargins(0, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, activity.getResources().getDisplayMetrics()), 0);
+		extraView.setLayoutParams(lp);
+	}
+
 }
