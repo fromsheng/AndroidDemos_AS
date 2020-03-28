@@ -22,6 +22,7 @@ public class Demos extends BaseActivity {
 	private void initActNames() {
 		actNames = new ArrayList<String>();
 		actNames.add("MyKotlinAct");
+		actNames.add("ActKeyValueDemo");
 		actNames.add("ActIndicatorDemo");
 		actNames.add("RecyclerGridDemo");
 		actNames.add("LocalReceiverDemo");
@@ -147,6 +148,7 @@ public class Demos extends BaseActivity {
 					itemClass = Class.forName(className);
 					
 					Intent intent = new Intent(mAct, itemClass);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block

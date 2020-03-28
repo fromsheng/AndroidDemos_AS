@@ -190,10 +190,11 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".acts.LocalReceiverDemo"></activity>
-        <activity android:name=".acts.RecyclerGridDemo"></activity>
-        <activity android:name=".acts.ActIndicatorDemo"></activity>
-        <activity android:name=".acts.MyKotlinAct"></activity>
+        <activity android:name=".acts.LocalReceiverDemo" />
+        <activity android:name=".acts.RecyclerGridDemo" />
+        <activity android:name=".acts.ActIndicatorDemo" />
+        <activity android:name=".acts.ActKeyValueDemo" />
+        <activity android:name=".acts.MyKotlinAct" />
     </application>
 
 </manifest>
