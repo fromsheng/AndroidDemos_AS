@@ -1,6 +1,12 @@
 package com.artion.androiddemos.common;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -240,6 +246,62 @@ public class ViewUtils {
 		lp.gravity = gravity;
 //      lp.setMargins(0, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, activity.getResources().getDisplayMetrics()), 0);
 		extraView.setLayoutParams(lp);
+	}
+
+	public static GradientDrawable getGradientDrawable(int color, float cornerRadius) {
+		GradientDrawable gd = new GradientDrawable();//创建drawable
+		gd.setColor(color);
+		gd.setCornerRadius(cornerRadius);
+		return gd;
+	}
+
+	/**
+	 * 创建selector。colorValue使用Color.parseColor,但是对view的setbackground不行，目前未知原因
+	 * @param normalColorValue
+	 * @param pressedColorValue
+	 * @param focusColorValue
+	 * @param unableColorValue
+	 * @return
+	 */
+	public static StateListDrawable newSelector(int normalColorValue, int pressedColorValue, int focusColorValue,
+												int unableColorValue) {
+		StateListDrawable bg = new StateListDrawable();
+		Drawable normal = normalColorValue == -1 ? null : getGradientDrawable(normalColorValue, 30);
+		Drawable pressed = pressedColorValue == -1 ? null : getGradientDrawable(pressedColorValue, 30);
+		Drawable focused = focusColorValue == -1 ? null : getGradientDrawable(focusColorValue, 30);
+		Drawable unable = unableColorValue == -1 ? null : getGradientDrawable(unableColorValue, 30);
+		// View.PRESSED_ENABLED_STATE_SET
+		bg.addState(new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled }, pressed);
+		// View.ENABLED_FOCUSED_STATE_SET
+		bg.addState(new int[] { android.R.attr.state_enabled, android.R.attr.state_focused }, focused);
+		// View.ENABLED_STATE_SET
+		bg.addState(new int[] { android.R.attr.state_enabled }, normal);
+		// View.FOCUSED_STATE_SET
+		bg.addState(new int[] { android.R.attr.state_focused }, focused);
+		// View.WINDOW_FOCUSED_STATE_SET
+		bg.addState(new int[] { android.R.attr.state_window_focused }, unable);
+		// View.EMPTY_STATE_SET
+		bg.addState(new int[] {}, normal);
+		return bg;
+	}
+
+	public static void setBackground(View view, String colorNormalStr, String colorPressedStr) {
+		if(view == null ||
+				TextUtils.isEmpty(colorNormalStr) || TextUtils.isEmpty(colorPressedStr)) {
+			return;
+		}
+		try {
+			int normalColor = Color.parseColor(colorNormalStr);
+			int pressedColor = Color.parseColor(colorPressedStr);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+				StateListDrawable drawable = newSelector(normalColor, pressedColor, pressedColor, normalColor);
+				view.setBackground(drawable);
+			} else {
+				view.setBackgroundColor(normalColor);
+			}
+		} catch (Exception e) {
+
+		}
 	}
 
 }
