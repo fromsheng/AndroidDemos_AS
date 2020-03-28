@@ -11,11 +11,14 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.artion.androiddemos.common.ClipUtils;
 import com.artion.androiddemos.common.ToastUtils;
 import com.artion.androiddemos.utils.DeviceTool;
 
 public class ClipboardDemo extends CommonBtnDemo {
 	ClipboardManager cb = null;
+
+	private int count = 1000;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -23,7 +26,7 @@ public class ClipboardDemo extends CommonBtnDemo {
 		super.initListener();
 		
 		cb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-		cb.setPrimaryClip(ClipData.newPlainText("", ""));
+//		cb.setPrimaryClip(ClipData.newPlainText("", ""));
 		cb.addPrimaryClipChangedListener(new OnPrimaryClipChangedListener() {
 			
 			@Override
@@ -38,7 +41,8 @@ public class ClipboardDemo extends CommonBtnDemo {
 			
 			@Override
 			public void onClick(View v) {
-				DeviceTool.copyToClipboard(mAct, "btn1", "111111111");
+				DeviceTool.copyToClipboard(mAct, String.valueOf(count), String.valueOf(count));
+				count ++;
 			}
 		});
 		btn2.setText("get");
@@ -46,6 +50,8 @@ public class ClipboardDemo extends CommonBtnDemo {
 			
 			@Override
 			public void onClick(View v) {
+
+				ClipUtils.getClipContent(mAct, "label");
 				 //无数据时直接返回
 		         if(!cb.hasPrimaryClip()){
 		        	 ToastUtils.showMessage(mAct, "剪贴板中无数据");
