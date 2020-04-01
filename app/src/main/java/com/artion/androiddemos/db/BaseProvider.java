@@ -3,6 +3,7 @@ package com.artion.androiddemos.db;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -13,36 +14,39 @@ import android.net.Uri;
 
 public abstract class BaseProvider extends ContentProvider {
 
+    protected final String TAG = getClass().getSimpleName();
     private Context context;
 
-    private SQLiteDatabase sqLiteDatabase;
+    protected String AUTHORITY = "";
 
-//    private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-//
-//    static {
-//        uriMatcher.addURI(AUTHORITY, PATH_VCODE, V_CODE);
-//    }
-
-//    private UriMatcher uriMatcher = null;
+    protected UriMatcher mUriMatcher = null;
 
     protected abstract String getTableName(Uri uri);
 
     protected abstract void addURIs();
 
-    protected abstract SQLiteDatabase getSQLiteDatabase();
+    protected abstract SQLiteDatabase getReadableDatabase();
+    protected abstract SQLiteDatabase getWritableDatabase();
+
+    protected abstract String getAuthority(Context context);
+
+    protected void addURI(String path, int code) {
+        if(mUriMatcher != null && AUTHORITY != null && path != null) {
+            mUriMatcher.addURI(AUTHORITY, path, code);
+        }
+    }
 
     @Override
     public boolean onCreate() {
         context = getContext();
         try {
+            AUTHORITY = getAuthority(context);
+            mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
             addURIs();
-//            uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-//            String authority = PaProviderUtils.getAuthorityPath(context.getPackageName(), PaProviderUtils.AUTHORITY_NAME);
-//            uriMatcher.addURI(authority, PaProviderUtils.PATH_VCODE, PaProviderUtils.V_CODE);
 
-            sqLiteDatabase = getSQLiteDatabase();
             return true;
         } catch (Exception e) {
+//            Logger.e(TAG, "onCreate " + e.getMessage());
         }
         return false;
     }
@@ -54,8 +58,9 @@ public abstract class BaseProvider extends ContentProvider {
             if (tableName == null) {
                 throw new IllegalArgumentException("Unsupported URI:" + uri);
             }
-            return sqLiteDatabase.query(tableName, projection, selection, selectionArgs, null, null, sortOrder, null);
+            return getReadableDatabase().query(tableName, projection, selection, selectionArgs, null, null, sortOrder, null);
         } catch (Exception e) {
+//            Logger.e(TAG, "query " + e.getMessage());
         }
         return null;
     }
@@ -70,9 +75,11 @@ public abstract class BaseProvider extends ContentProvider {
 
         String tableName = getTableName(uri);
         if (tableName == null) {
-            throw new IllegalArgumentException("Unsupported URI:" + uri);
+            return null;
         }
+        SQLiteDatabase sqLiteDatabase = null;
         try {
+            sqLiteDatabase = getWritableDatabase();
             sqLiteDatabase.beginTransaction();
             long row = sqLiteDatabase.insert(tableName, null, values);
             sqLiteDatabase.setTransactionSuccessful();
@@ -81,7 +88,7 @@ public abstract class BaseProvider extends ContentProvider {
             }
             return uri;
         } catch (Exception e) {
-
+//            Logger.e(TAG, "insert " + e.getMessage());
         } finally {
             if(sqLiteDatabase != null) {
                 sqLiteDatabase.endTransaction();
@@ -97,7 +104,9 @@ public abstract class BaseProvider extends ContentProvider {
         if (tableName == null) {
             throw new IllegalArgumentException("Unsupported URI:" + uri);
         }
+        SQLiteDatabase sqLiteDatabase = null;
         try {
+            sqLiteDatabase = getWritableDatabase();
             sqLiteDatabase.beginTransaction();
             int count = sqLiteDatabase.delete(tableName, selection, selectionArgs);
             sqLiteDatabase.setTransactionSuccessful();
@@ -106,7 +115,7 @@ public abstract class BaseProvider extends ContentProvider {
             }
             return count;
         } catch (Exception e) {
-
+//            Logger.e(TAG, "delete " + e.getMessage());
         } finally {
             if(sqLiteDatabase != null) {
                 sqLiteDatabase.endTransaction();
@@ -121,7 +130,9 @@ public abstract class BaseProvider extends ContentProvider {
         if (tableName == null) {
             throw new IllegalArgumentException("Unsupported URI:" + uri);
         }
+        SQLiteDatabase sqLiteDatabase = null;
         try {
+            sqLiteDatabase = getWritableDatabase();
             sqLiteDatabase.beginTransaction();
             int row = sqLiteDatabase.update(tableName, values, selection, selectionArgs);
             sqLiteDatabase.setTransactionSuccessful();
@@ -130,7 +141,7 @@ public abstract class BaseProvider extends ContentProvider {
             }
             return row;
         } catch (Exception e) {
-
+//            Logger.e(TAG, "update " + e.getMessage());
         } finally {
             if(sqLiteDatabase != null) {
                 sqLiteDatabase.endTransaction();
