@@ -2,21 +2,24 @@ package com.artion.androiddemos.common;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.artion.androiddemos.R;
@@ -302,6 +305,65 @@ public class ViewUtils {
 		} catch (Exception e) {
 
 		}
+	}
+
+	/**
+	 * 设置控件的边框阴影效果，主要是顶部阴影
+	 * @param view
+	 * @param elevation
+	 * @param radius
+	 * @param isAllRound
+	 */
+	public static void setViewOutlineProvider(View view, final float elevation, final float radius, final boolean isAllRound) {
+		if(view == null) {
+			return;
+		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			view.setClipToOutline(true);
+			view.setElevation(elevation);//阴影
+//            if (Build.VERSION.SDK_INT >= 28) {
+//                view.setOutlineSpotShadowColor(Color.parseColor("#00D4D4D4"));//阴影颜色
+//            }
+			ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
+				@Override
+				public void getOutline(View view, Outline outline) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+						outline.setAlpha(0.5f);
+						int bottom = isAllRound ? view.getHeight() : (int) (view.getHeight() + radius);
+						outline.setRoundRect(0, (int) -elevation, view.getWidth(), bottom, radius);
+					}
+				}
+			};
+			view.setOutlineProvider(viewOutlineProvider);
+		} else {//低版本加边框处理
+			Drawable drawable = view.getBackground();
+			if(drawable == null) {
+				drawable = new GradientDrawable();
+			}
+			Drawable outDrawable = getGradientDrawable(Color.parseColor("#d4d4d4"), radius);
+			outDrawable.setAlpha(128);
+			outDrawable.setBounds(0, -(int) elevation, view.getWidth(), view.getHeight());
+			Drawable[] layers = new Drawable[]{outDrawable, drawable};
+			LayerDrawable layerDrawable = new LayerDrawable(layers);
+			layerDrawable.setLayerInset(1, 1, (int) elevation /2, 1, 1);
+			if(Build.VERSION.SDK_INT >= 16) {
+				view.setBackground(layerDrawable);
+			} else {
+				view.setBackgroundDrawable(layerDrawable);
+			}
+		}
+	}
+
+	public static void colorFilterGray(ImageView imageView) {
+		if(imageView == null) {
+			return;
+		}
+		final float[] COLOR_GRAY = new float[] {
+				0.33f, 0.59f, 0.11f, 0, 0,
+				0.33f, 0.59f, 0.11f, 0, 0,
+				0.33f, 0.59f, 0.11f, 0, 0,
+				0, 0, 0, 1, 0 };
+		imageView.setColorFilter( new ColorMatrixColorFilter(COLOR_GRAY) ) ;
 	}
 
 }
