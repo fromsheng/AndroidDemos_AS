@@ -2,6 +2,7 @@ package com.artion.androiddemos.common;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
@@ -358,12 +359,16 @@ public class ViewUtils {
 		if(imageView == null) {
 			return;
 		}
-		final float[] COLOR_GRAY = new float[] {
-				0.33f, 0.59f, 0.11f, 0, 0,
-				0.33f, 0.59f, 0.11f, 0, 0,
-				0.33f, 0.59f, 0.11f, 0, 0,
-				0, 0, 0, 1, 0 };
-		imageView.setColorFilter( new ColorMatrixColorFilter(COLOR_GRAY) ) ;
+//		final float[] COLOR_GRAY = new float[] {
+//				0.33f, 0.59f, 0.11f, 0, 0,
+//				0.33f, 0.59f, 0.11f, 0, 0,
+//				0.33f, 0.59f, 0.11f, 0, 0,
+//				0, 0, 0, 1, 0 };
+//		imageView.setColorFilter( new ColorMatrixColorFilter(COLOR_GRAY) ) ;
+		ColorMatrix matrix = new ColorMatrix();
+		matrix.setSaturation(0);
+		ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+		imageView.setColorFilter(filter);
 	}
 
 }
